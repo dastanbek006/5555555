@@ -1,0 +1,134 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String          @id @default(uuid())
+  phone         String          @unique
+  password      String
+  firstName     String
+  lastName      String
+  avatarUrl     String?
+  role          String          @default("USER") // USER, PARTNER, ADMIN
+  partnerTier   String          @default("NONE") // NONE, ODDIY, PRO, VIP
+  partnerStatus String          @default("NONE") // NONE, PENDING, APPROVED, REJECTED
+  partnerProfile PartnerProfile?
+  products      Product[]
+  orders        Order[]         @relation("UserOrders")
+  assignedOrders Order[]        @relation("PartnerOrders")
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model PartnerProfile {
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessName String?
+  address      String?
+  lat          Float?
+  lng          Float?
+  status       String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  tier         String   @default("ODDIY")   // ODDIY, PRO, VIP
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Category {
+  id         String    @id @default(uuid())
+  name       String    @unique
+  coverImage String
+  products   Product[]
+  createdAt  DateTime  @default(now())
+}
+
+model Product {
+  id          String      @id @default(uuid())
+  title       String
+  description String?
+  price       Float
+  stock       Int
+  images      String      // JSON stringified array of image URLs (max 3)
+  categoryId  String
+  category    Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  isBlocked   Boolean     @default(false)
+  sellerId    String
+  seller      User        @relation(fields: [sellerId], references: [id], onDelete: Cascade)
+  orderItems  OrderItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Service {
+  id           String        @id @default(uuid())
+  name         String
+  iconImage    String
+  isBlocked    Boolean       @default(false)
+  customFields CustomField[]
+  createdAt    DateTime      @default(now())
+}
+
+model CustomField {
+  id        String   @id @default(uuid())
+  serviceId String
+  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  fieldName String
+  fieldType String   @default("text") // text, file, number, select
+  isRequired Boolean @default(true)
+}
+
+model Order {
+  id            String      @id @default(uuid())
+  userId        String
+  user          User        @relation("UserOrders", fields: [userId], references: [id])
+  partnerId     String?
+  partner       User?       @relation("PartnerOrders", fields: [partnerId], references: [id])
+  orderType     String      @default("PRODUCT") // PRODUCT, SERVICE
+  serviceId     String?
+  status        String      @default("KUTILMOQDA") // KUTILMOQDA, KORIB_CHIQILMOQDA, YOLGA_CHIQDI, TOPSHIRILDI, BEKOR_QILINDI
+  totalPrice    Float
+  paymentMethod String      @default("Naqd to'lov")
+  attachedFiles String?     // JSON stringified array of relative file paths (deleted when status = TOPSHIRILDI)
+  customInputs  String?     // JSON stringified object of form responses
+  userLat       Float?
+  userLng       Float?
+  partnerLat    Float?
+  partnerLng    Float?
+  items         OrderItem[]
+  alerts        SLAAlert[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+}
+
+model Banner {
+  id        String   @id @default(uuid())
+  imageUrl  String
+  text      String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model SLAAlert {
+  id           String   @id @default(uuid())
+  orderId      String
+  order        Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  partnerName  String
+  partnerPhone String
+  createdAt    DateTime @default(now())
+  resolved     Boolean  @default(false)
+}

@@ -1,0 +1,51 @@
+> Ready on http://localhost:3000
+ ○ Compiling / ...
+ ✓ Compiled / in 7.4s (599 modules)
+ GET / 200 in 7898ms
+ ✓ Compiled in 515ms (289 modules)
+ ○ Compiling /admin ...
+ ✓ Compiled /admin in 3.7s (596 modules)
+ GET /admin 200 in 3879ms
+ ✓ Compiled /api/alerts in 249ms (342 modules)
+ ✓ Compiled (357 modules)
+prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive`, `main`.`Banner`.`createdAt` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`phone`, `main`.`User`.`password`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`partnerTier`, `main`.`User`.`partnerStatus`, `main`.`User`.`createdAt`, `main`.`User`.`updatedAt` FROM `main`.`User` WHERE `main`.`User`.`role` = ? ORDER BY `main`.`User`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/banners 200 in 584ms
+ GET /api/orders 200 in 579ms
+ GET /api/partners 200 in 581ms
+ GET /api/alerts 200 in 582ms
+ GET /api/services 200 in 585ms
+ GET /api/categories 200 in 590ms
+prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`SLAAlert`.`id`, `main`.`SLAAlert`.`orderId`, `main`.`SLAAlert`.`partnerName`, `main`.`SLAAlert`.`partnerPhone`, `main`.`SLAAlert`.`createdAt`, `main`.`SLAAlert`.`resolved` FROM `main`.`SLAAlert` WHERE 1=1 ORDER BY `main`.`SLAAlert`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Order`.`id`, `main`.`Order`.`userId`, `main`.`Order`.`partnerId`, `main`.`Order`.`orderType`, `main`.`Order`.`serviceId`, `main`.`Order`.`status`, `main`.`Order`.`totalPrice`, `main`.`Order`.`paymentMethod`, `main`.`Order`.`attachedFiles`, `main`.`Order`.`customInputs`, `main`.`Order`.`userLat`, `main`.`Order`.`userLng`, `main`.`Order`.`partnerLat`, `main`.`Order`.`partnerLng`, `main`.`Order`.`createdAt`, `main`.`Order`.`updatedAt` FROM `main`.`Order` WHERE 1=1 ORDER BY `main`.`Order`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`PartnerProfile`.`id`, `main`.`PartnerProfile`.`userId`, `main`.`PartnerProfile`.`businessName`, `main`.`PartnerProfile`.`address`, `main`.`PartnerProfile`.`lat`, `main`.`PartnerProfile`.`lng`, `main`.`PartnerProfile`.`status`, `main`.`PartnerProfile`.`tier`, `main`.`PartnerProfile`.`createdAt`, `main`.`PartnerProfile`.`updatedAt` FROM `main`.`PartnerProfile` WHERE `main`.`PartnerProfile`.`userId` IN (?,?) LIMIT ? OFFSET ?
+ GET /api/banners 200 in 24ms
+prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive`, `main`.`Banner`.`createdAt` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Order`.`id`, `main`.`Order`.`userId`, `main`.`Order`.`partnerId`, `main`.`Order`.`orderType`, `main`.`Order`.`serviceId`, `main`.`Order`.`status`, `main`.`Order`.`totalPrice`, `main`.`Order`.`paymentMethod`, `main`.`Order`.`attachedFiles`, `main`.`Order`.`customInputs`, `main`.`Order`.`userLat`, `main`.`Order`.`userLng`, `main`.`Order`.`partnerLat`, `main`.`Order`.`partnerLng`, `main`.`Order`.`createdAt`, `main`.`Order`.`updatedAt` FROM `main`.`Order` WHERE 1=1 ORDER BY `main`.`Order`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`phone`, `main`.`User`.`password`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`partnerTier`, `main`.`User`.`partnerStatus`, `main`.`User`.`createdAt`, `main`.`User`.`updatedAt` FROM `main`.`User` WHERE `main`.`User`.`role` = ? ORDER BY `main`.`User`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`PartnerProfile`.`id`, `main`.`PartnerProfile`.`userId`, `main`.`PartnerProfile`.`businessName`, `main`.`PartnerProfile`.`address`, `main`.`PartnerProfile`.`lat`, `main`.`PartnerProfile`.`lng`, `main`.`PartnerProfile`.`status`, `main`.`PartnerProfile`.`tier`, `main`.`PartnerProfile`.`createdAt`, `main`.`PartnerProfile`.`updatedAt` FROM `main`.`PartnerProfile` WHERE `main`.`PartnerProfile`.`userId` IN (?,?) LIMIT ? OFFSET ?
+ GET /api/orders 200 in 33ms
+ GET /api/partners 200 in 35ms
+ GET /api/alerts 200 in 36ms
+prisma:query SELECT `main`.`SLAAlert`.`id`, `main`.`SLAAlert`.`orderId`, `main`.`SLAAlert`.`partnerName`, `main`.`SLAAlert`.`partnerPhone`, `main`.`SLAAlert`.`createdAt`, `main`.`SLAAlert`.`resolved` FROM `main`.`SLAAlert` WHERE 1=1 ORDER BY `main`.`SLAAlert`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/services 200 in 21ms
+prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?) LIMIT ? OFFSET ?
+ GET /api/categories 200 in 29ms
+prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
+ ✓ Compiled /services in 273ms (655 modules)
+ GET /services 200 in 403ms
+prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?) LIMIT ? OFFSET ?
+ GET /api/services 200 in 20ms
+prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?) LIMIT ? OFFSET ?
+ GET /api/services 200 in 10ms
+ ○ Compiling /orders ...
+ ✓ Compiled /orders in 3.5s (1579 modules)
+ GET /orders 200 in 3810ms
+[Socket.io] Client connected: tyW5mHb-Cz23MrYcAAAA
+[Socket.io] Client disconnected: tyW5mHb-Cz23MrYcAAAA
