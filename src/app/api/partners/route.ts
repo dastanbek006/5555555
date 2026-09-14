@@ -3,9 +3,8 @@ import prisma from '@/lib/prisma';
 
 export async function GET() {
   try {
-    const partners = await prisma.user.findMany({
-      where: { role: 'PARTNER' },
-      include: { partnerProfile: true },
+    const partners = await prisma.partner.findMany({
+      include: { user: true },
       orderBy: { createdAt: 'desc' },
     });
     return NextResponse.json({ partners });
@@ -16,28 +15,18 @@ export async function GET() {
 
 export async function PATCH(request: Request) {
   try {
-    const { userId, partnerTier, partnerStatus } = await request.json();
+    const { partnerId, level, status } = await request.json();
 
-    const user = await prisma.user.update({
-      where: { id: userId },
+    const partner = await prisma.partner.update({
+      where: { id: partnerId },
       data: {
-        partnerTier: partnerTier || undefined,
-        partnerStatus: partnerStatus || undefined,
+        level: level || undefined,
+        status: status || undefined,
       },
-      include: { partnerProfile: true },
+      include: { user: true },
     });
 
-    if (user.partnerProfile) {
-      await prisma.partnerProfile.update({
-        where: { userId },
-        data: {
-          tier: partnerTier || undefined,
-          status: partnerStatus || undefined,
-        },
-      });
-    }
-
-    return NextResponse.json({ user });
+    return NextResponse.json({ partner });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

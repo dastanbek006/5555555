@@ -1,359 +1,97 @@
 > Ready on http://localhost:3000
  ○ Compiling / ...
- ✓ Compiled / in 7.4s (599 modules)
- GET / 200 in 7898ms
- ✓ Compiled in 515ms (289 modules)
- ○ Compiling /admin ...
- ✓ Compiled /admin in 3.7s (596 modules)
- GET /admin 200 in 3879ms
- ✓ Compiled /api/alerts in 249ms (342 modules)
- ✓ Compiled (357 modules)
-prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive`, `main`.`Banner`.`createdAt` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`phone`, `main`.`User`.`password`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`partnerTier`, `main`.`User`.`partnerStatus`, `main`.`User`.`createdAt`, `main`.`User`.`updatedAt` FROM `main`.`User` WHERE `main`.`User`.`role` = ? ORDER BY `main`.`User`.`createdAt` DESC LIMIT ? OFFSET ?
- GET /api/banners 200 in 584ms
- GET /api/orders 200 in 579ms
- GET /api/partners 200 in 581ms
- GET /api/alerts 200 in 582ms
- GET /api/services 200 in 585ms
- GET /api/categories 200 in 590ms
-prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?) LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`SLAAlert`.`id`, `main`.`SLAAlert`.`orderId`, `main`.`SLAAlert`.`partnerName`, `main`.`SLAAlert`.`partnerPhone`, `main`.`SLAAlert`.`createdAt`, `main`.`SLAAlert`.`resolved` FROM `main`.`SLAAlert` WHERE 1=1 ORDER BY `main`.`SLAAlert`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Order`.`id`, `main`.`Order`.`userId`, `main`.`Order`.`partnerId`, `main`.`Order`.`orderType`, `main`.`Order`.`serviceId`, `main`.`Order`.`status`, `main`.`Order`.`totalPrice`, `main`.`Order`.`paymentMethod`, `main`.`Order`.`attachedFiles`, `main`.`Order`.`customInputs`, `main`.`Order`.`userLat`, `main`.`Order`.`userLng`, `main`.`Order`.`partnerLat`, `main`.`Order`.`partnerLng`, `main`.`Order`.`createdAt`, `main`.`Order`.`updatedAt` FROM `main`.`Order` WHERE 1=1 ORDER BY `main`.`Order`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`PartnerProfile`.`id`, `main`.`PartnerProfile`.`userId`, `main`.`PartnerProfile`.`businessName`, `main`.`PartnerProfile`.`address`, `main`.`PartnerProfile`.`lat`, `main`.`PartnerProfile`.`lng`, `main`.`PartnerProfile`.`status`, `main`.`PartnerProfile`.`tier`, `main`.`PartnerProfile`.`createdAt`, `main`.`PartnerProfile`.`updatedAt` FROM `main`.`PartnerProfile` WHERE `main`.`PartnerProfile`.`userId` IN (?,?) LIMIT ? OFFSET ?
- GET /api/banners 200 in 24ms
-prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive`, `main`.`Banner`.`createdAt` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Order`.`id`, `main`.`Order`.`userId`, `main`.`Order`.`partnerId`, `main`.`Order`.`orderType`, `main`.`Order`.`serviceId`, `main`.`Order`.`status`, `main`.`Order`.`totalPrice`, `main`.`Order`.`paymentMethod`, `main`.`Order`.`attachedFiles`, `main`.`Order`.`customInputs`, `main`.`Order`.`userLat`, `main`.`Order`.`userLng`, `main`.`Order`.`partnerLat`, `main`.`Order`.`partnerLng`, `main`.`Order`.`createdAt`, `main`.`Order`.`updatedAt` FROM `main`.`Order` WHERE 1=1 ORDER BY `main`.`Order`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`phone`, `main`.`User`.`password`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`partnerTier`, `main`.`User`.`partnerStatus`, `main`.`User`.`createdAt`, `main`.`User`.`updatedAt` FROM `main`.`User` WHERE `main`.`User`.`role` = ? ORDER BY `main`.`User`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`PartnerProfile`.`id`, `main`.`PartnerProfile`.`userId`, `main`.`PartnerProfile`.`businessName`, `main`.`PartnerProfile`.`address`, `main`.`PartnerProfile`.`lat`, `main`.`PartnerProfile`.`lng`, `main`.`PartnerProfile`.`status`, `main`.`PartnerProfile`.`tier`, `main`.`PartnerProfile`.`createdAt`, `main`.`PartnerProfile`.`updatedAt` FROM `main`.`PartnerProfile` WHERE `main`.`PartnerProfile`.`userId` IN (?,?) LIMIT ? OFFSET ?
- GET /api/orders 200 in 33ms
- GET /api/partners 200 in 35ms
- GET /api/alerts 200 in 36ms
-prisma:query SELECT `main`.`SLAAlert`.`id`, `main`.`SLAAlert`.`orderId`, `main`.`SLAAlert`.`partnerName`, `main`.`SLAAlert`.`partnerPhone`, `main`.`SLAAlert`.`createdAt`, `main`.`SLAAlert`.`resolved` FROM `main`.`SLAAlert` WHERE 1=1 ORDER BY `main`.`SLAAlert`.`createdAt` DESC LIMIT ? OFFSET ?
- GET /api/services 200 in 21ms
-prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?) LIMIT ? OFFSET ?
- GET /api/categories 200 in 29ms
-prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
- ✓ Compiled /services in 273ms (655 modules)
- GET /services 200 in 403ms
-prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?) LIMIT ? OFFSET ?
- GET /api/services 200 in 20ms
-prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?) LIMIT ? OFFSET ?
- GET /api/services 200 in 10ms
- ○ Compiling /orders ...
- ✓ Compiled /orders in 3.5s (1579 modules)
- GET /orders 200 in 3810ms
-[Socket.io] Client connected: tyW5mHb-Cz23MrYcAAAA
-[Socket.io] Client disconnected: tyW5mHb-Cz23MrYcAAAA
- ✓ Compiled in 4.9s (748 modules)
- ✓ Compiled in 2.1s (754 modules)
- ○ Compiling / ...
- ✓ Compiled / in 667ms (301 modules)
- GET / 200 in 1002ms
+ ✓ Compiled / in 9.7s (1427 modules)
+ GET / 200 in 10470ms
+ ✓ Compiled in 684ms (704 modules)
  ○ Compiling /api/products ...
- ✓ Compiled /admin in 976ms (331 modules)
- ✓ Compiled (351 modules)
-prisma:query SELECT 1
-prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`price`, `main`.`Product`.`stock`, `main`.`Product`.`images`, `main`.`Product`.`categoryId`, `main`.`Product`.`isBlocked`, `main`.`Product`.`sellerId`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE `main`.`Product`.`isBlocked` = ? ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE `main`.`Category`.`id` IN (?,?,?) LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`phone`, `main`.`User`.`password`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`partnerTier`, `main`.`User`.`partnerStatus`, `main`.`User`.`createdAt`, `main`.`User`.`updatedAt` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
- GET /api/categories 200 in 1408ms
- GET /api/products 200 in 1409ms
-prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive`, `main`.`Banner`.`createdAt` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
- GET /api/banners 200 in 1437ms
- GET /admin 200 in 624ms
-prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
- GET /api/categories 200 in 59ms
-prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`price`, `main`.`Product`.`stock`, `main`.`Product`.`images`, `main`.`Product`.`categoryId`, `main`.`Product`.`isBlocked`, `main`.`Product`.`sellerId`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE `main`.`Product`.`isBlocked` = ? ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE `main`.`Category`.`id` IN (?,?,?) LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`phone`, `main`.`User`.`password`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`partnerTier`, `main`.`User`.`partnerStatus`, `main`.`User`.`createdAt`, `main`.`User`.`updatedAt` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive`, `main`.`Banner`.`createdAt` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
- GET /api/products 200 in 68ms
- GET /api/banners 200 in 63ms
-prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive`, `main`.`Banner`.`createdAt` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
- GET /api/banners 200 in 43ms
- ✓ Compiled /api/alerts in 189ms (353 modules)
- ✓ Compiled (359 modules)
-prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
- GET /api/categories 200 in 372ms
-prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?,?,?,?) LIMIT ? OFFSET ?
- GET /api/services 200 in 396ms
- GET /api/partners 200 in 397ms
-prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`phone`, `main`.`User`.`password`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`partnerTier`, `main`.`User`.`partnerStatus`, `main`.`User`.`createdAt`, `main`.`User`.`updatedAt` FROM `main`.`User` WHERE `main`.`User`.`role` = ? ORDER BY `main`.`User`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`PartnerProfile`.`id`, `main`.`PartnerProfile`.`userId`, `main`.`PartnerProfile`.`businessName`, `main`.`PartnerProfile`.`address`, `main`.`PartnerProfile`.`lat`, `main`.`PartnerProfile`.`lng`, `main`.`PartnerProfile`.`status`, `main`.`PartnerProfile`.`tier`, `main`.`PartnerProfile`.`createdAt`, `main`.`PartnerProfile`.`updatedAt` FROM `main`.`PartnerProfile` WHERE `main`.`PartnerProfile`.`userId` IN (?,?) LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Order`.`id`, `main`.`Order`.`userId`, `main`.`Order`.`partnerId`, `main`.`Order`.`orderType`, `main`.`Order`.`serviceId`, `main`.`Order`.`status`, `main`.`Order`.`totalPrice`, `main`.`Order`.`paymentMethod`, `main`.`Order`.`attachedFiles`, `main`.`Order`.`customInputs`, `main`.`Order`.`userLat`, `main`.`Order`.`userLng`, `main`.`Order`.`partnerLat`, `main`.`Order`.`partnerLng`, `main`.`Order`.`createdAt`, `main`.`Order`.`updatedAt` FROM `main`.`Order` WHERE 1=1 ORDER BY `main`.`Order`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive`, `main`.`Banner`.`createdAt` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`SLAAlert`.`id`, `main`.`SLAAlert`.`orderId`, `main`.`SLAAlert`.`partnerName`, `main`.`SLAAlert`.`partnerPhone`, `main`.`SLAAlert`.`createdAt`, `main`.`SLAAlert`.`resolved` FROM `main`.`SLAAlert` WHERE 1=1 ORDER BY `main`.`SLAAlert`.`createdAt` DESC LIMIT ? OFFSET ?
- GET /api/orders 200 in 401ms
- GET /api/banners 200 in 369ms
- GET /api/alerts 200 in 403ms
- GET /api/categories 200 in 49ms
-prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?,?,?,?) LIMIT ? OFFSET ?
- GET /api/services 200 in 28ms
- GET /api/alerts 200 in 34ms
-prisma:query SELECT `main`.`SLAAlert`.`id`, `main`.`SLAAlert`.`orderId`, `main`.`SLAAlert`.`partnerName`, `main`.`SLAAlert`.`partnerPhone`, `main`.`SLAAlert`.`createdAt`, `main`.`SLAAlert`.`resolved` FROM `main`.`SLAAlert` WHERE 1=1 ORDER BY `main`.`SLAAlert`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`phone`, `main`.`User`.`password`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`partnerTier`, `main`.`User`.`partnerStatus`, `main`.`User`.`createdAt`, `main`.`User`.`updatedAt` FROM `main`.`User` WHERE `main`.`User`.`role` = ? ORDER BY `main`.`User`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`PartnerProfile`.`id`, `main`.`PartnerProfile`.`userId`, `main`.`PartnerProfile`.`businessName`, `main`.`PartnerProfile`.`address`, `main`.`PartnerProfile`.`lat`, `main`.`PartnerProfile`.`lng`, `main`.`PartnerProfile`.`status`, `main`.`PartnerProfile`.`tier`, `main`.`PartnerProfile`.`createdAt`, `main`.`PartnerProfile`.`updatedAt` FROM `main`.`PartnerProfile` WHERE `main`.`PartnerProfile`.`userId` IN (?,?) LIMIT ? OFFSET ?
- GET /api/partners 200 in 38ms
-prisma:query SELECT `main`.`Order`.`id`, `main`.`Order`.`userId`, `main`.`Order`.`partnerId`, `main`.`Order`.`orderType`, `main`.`Order`.`serviceId`, `main`.`Order`.`status`, `main`.`Order`.`totalPrice`, `main`.`Order`.`paymentMethod`, `main`.`Order`.`attachedFiles`, `main`.`Order`.`customInputs`, `main`.`Order`.`userLat`, `main`.`Order`.`userLng`, `main`.`Order`.`partnerLat`, `main`.`Order`.`partnerLng`, `main`.`Order`.`createdAt`, `main`.`Order`.`updatedAt` FROM `main`.`Order` WHERE 1=1 ORDER BY `main`.`Order`.`createdAt` DESC LIMIT ? OFFSET ?
- GET /api/orders 200 in 39ms
+ ✓ Compiled /admin in 5s (744 modules)
+ ✓ Compiled in 890ms (701 modules)
+prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`imageUrl` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`partnerId`, `main`.`Product`.`categoryId`, `main`.`Product`.`name`, `main`.`Product`.`description`, `main`.`Product`.`price`, `main`.`Product`.`stock`, `main`.`Product`.`images`, `main`.`Product`.`isActive`, `main`.`Product`.`createdAt` FROM `main`.`Product` WHERE `main`.`Product`.`isActive` = ? ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`imageUrl` FROM `main`.`Category` WHERE `main`.`Category`.`id` IN (?,?,?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`phone`, `main`.`User`.`passwordHash`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`createdAt` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+ GET /api/categories 200 in 6242ms
+ GET /api/products 200 in 6244ms
+ GET /api/banners 200 in 6248ms
+ GET /admin 200 in 5630ms
+prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`imageUrl` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`partnerId`, `main`.`Product`.`categoryId`, `main`.`Product`.`name`, `main`.`Product`.`description`, `main`.`Product`.`price`, `main`.`Product`.`stock`, `main`.`Product`.`images`, `main`.`Product`.`isActive`, `main`.`Product`.`createdAt` FROM `main`.`Product` WHERE `main`.`Product`.`isActive` = ? ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`imageUrl` FROM `main`.`Category` WHERE `main`.`Category`.`id` IN (?,?,?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`phone`, `main`.`User`.`passwordHash`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`createdAt` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
+ GET /api/banners 200 in 41ms
+ ✓ Compiled /api/orders in 284ms (768 modules)
+ ✓ Compiled (774 modules)
+prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`imageUrl` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
+ GET /api/categories 200 in 550ms
+ GET /api/banners 200 in 539ms
+prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`categoryId`, `main`.`Service`.`name`, `main`.`Service`.`imageUrl`, `main`.`Service`.`isActive`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`ServiceField`.`id`, `main`.`ServiceField`.`serviceId`, `main`.`ServiceField`.`label`, `main`.`ServiceField`.`fieldType`, `main`.`ServiceField`.`required` FROM `main`.`ServiceField` WHERE `main`.`ServiceField`.`serviceId` IN (?,?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Partner`.`id`, `main`.`Partner`.`userId`, `main`.`Partner`.`level`, `main`.`Partner`.`status`, `main`.`Partner`.`createdAt` FROM `main`.`Partner` WHERE 1=1 ORDER BY `main`.`Partner`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`phone`, `main`.`User`.`passwordHash`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`createdAt` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Alert`.`id`, `main`.`Alert`.`orderId`, `main`.`Alert`.`partnerId`, `main`.`Alert`.`message`, `main`.`Alert`.`createdAt` FROM `main`.`Alert` WHERE 1=1 ORDER BY `main`.`Alert`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Order`.`id`, `main`.`Order`.`userId`, `main`.`Order`.`partnerId`, `main`.`Order`.`type`, `main`.`Order`.`status`, `main`.`Order`.`totalPrice`, `main`.`Order`.`createdAt`, `main`.`Order`.`deliveredAt` FROM `main`.`Order` WHERE 1=1 ORDER BY `main`.`Order`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/services 200 in 589ms
+ GET /api/partners 200 in 588ms
+ GET /api/alerts 200 in 590ms
+ GET /api/orders 200 in 594ms
+prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`imageUrl` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
+ GET /api/categories 200 in 60ms
+ GET /api/services 200 in 31ms
+prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`categoryId`, `main`.`Service`.`name`, `main`.`Service`.`imageUrl`, `main`.`Service`.`isActive`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`ServiceField`.`id`, `main`.`ServiceField`.`serviceId`, `main`.`ServiceField`.`label`, `main`.`ServiceField`.`fieldType`, `main`.`ServiceField`.`required` FROM `main`.`ServiceField` WHERE `main`.`ServiceField`.`serviceId` IN (?,?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Partner`.`id`, `main`.`Partner`.`userId`, `main`.`Partner`.`level`, `main`.`Partner`.`status`, `main`.`Partner`.`createdAt` FROM `main`.`Partner` WHERE 1=1 ORDER BY `main`.`Partner`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`phone`, `main`.`User`.`passwordHash`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`createdAt` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`Order`.`id`, `main`.`Order`.`userId`, `main`.`Order`.`partnerId`, `main`.`Order`.`type`, `main`.`Order`.`status`, `main`.`Order`.`totalPrice`, `main`.`Order`.`createdAt`, `main`.`Order`.`deliveredAt` FROM `main`.`Order` WHERE 1=1 ORDER BY `main`.`Order`.`createdAt` DESC LIMIT ? OFFSET ?
+ GET /api/partners 200 in 36ms
+ GET /api/orders 200 in 36ms
+ GET /api/alerts 200 in 39ms
+prisma:query SELECT `main`.`Alert`.`id`, `main`.`Alert`.`orderId`, `main`.`Alert`.`partnerId`, `main`.`Alert`.`message`, `main`.`Alert`.`createdAt` FROM `main`.`Alert` WHERE 1=1 ORDER BY `main`.`Alert`.`createdAt` DESC LIMIT ? OFFSET ?
  ○ Compiling /services ...
- ✓ Compiled /services in 995ms (777 modules)
- GET /services 200 in 1264ms
-prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?,?,?,?) LIMIT ? OFFSET ?
- GET /api/services 200 in 20ms
-prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?,?,?,?) LIMIT ? OFFSET ?
- GET /api/services 200 in 13ms
- ✓ Compiled /orders in 311ms (853 modules)
- GET /orders 200 in 476ms
-[Socket.io] Client connected: GPfr-A1ca1EcRqMxAAAB
-[Socket.io] Client disconnected: GPfr-A1ca1EcRqMxAAAB
- ✓ Compiled in 1051ms (1611 modules)
- GET / 200 in 107ms
-prisma:query SELECT 1
-prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive`, `main`.`Banner`.`createdAt` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
- GET /api/banners 200 in 34ms
- GET /api/categories 200 in 44ms
-prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`price`, `main`.`Product`.`stock`, `main`.`Product`.`images`, `main`.`Product`.`categoryId`, `main`.`Product`.`isBlocked`, `main`.`Product`.`sellerId`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE `main`.`Product`.`isBlocked` = ? ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE `main`.`Category`.`id` IN (?,?,?) LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`phone`, `main`.`User`.`password`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`partnerTier`, `main`.`User`.`partnerStatus`, `main`.`User`.`createdAt`, `main`.`User`.`updatedAt` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
- GET /api/products 200 in 47ms
-prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive`, `main`.`Banner`.`createdAt` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
- GET /api/banners 200 in 51ms
-prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
- GET /api/categories 200 in 43ms
- GET /api/products 200 in 43ms
-prisma:query SELECT `main`.`Product`.`id`, `main`.`Product`.`title`, `main`.`Product`.`description`, `main`.`Product`.`price`, `main`.`Product`.`stock`, `main`.`Product`.`images`, `main`.`Product`.`categoryId`, `main`.`Product`.`isBlocked`, `main`.`Product`.`sellerId`, `main`.`Product`.`createdAt`, `main`.`Product`.`updatedAt` FROM `main`.`Product` WHERE `main`.`Product`.`isBlocked` = ? ORDER BY `main`.`Product`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE `main`.`Category`.`id` IN (?,?,?) LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`phone`, `main`.`User`.`password`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`partnerTier`, `main`.`User`.`partnerStatus`, `main`.`User`.`createdAt`, `main`.`User`.`updatedAt` FROM `main`.`User` WHERE `main`.`User`.`id` IN (?) LIMIT ? OFFSET ?
- GET /admin 200 in 44ms
-prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive`, `main`.`Banner`.`createdAt` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
- GET /api/banners 200 in 51ms
-prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
- GET /api/categories 200 in 71ms
- GET /api/services 200 in 63ms
-prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?,?,?,?) LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`phone`, `main`.`User`.`password`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`partnerTier`, `main`.`User`.`partnerStatus`, `main`.`User`.`createdAt`, `main`.`User`.`updatedAt` FROM `main`.`User` WHERE `main`.`User`.`role` = ? ORDER BY `main`.`User`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`PartnerProfile`.`id`, `main`.`PartnerProfile`.`userId`, `main`.`PartnerProfile`.`businessName`, `main`.`PartnerProfile`.`address`, `main`.`PartnerProfile`.`lat`, `main`.`PartnerProfile`.`lng`, `main`.`PartnerProfile`.`status`, `main`.`PartnerProfile`.`tier`, `main`.`PartnerProfile`.`createdAt`, `main`.`PartnerProfile`.`updatedAt` FROM `main`.`PartnerProfile` WHERE `main`.`PartnerProfile`.`userId` IN (?,?) LIMIT ? OFFSET ?
-prisma:query SELECT 1
-prisma:query SELECT `main`.`Order`.`id`, `main`.`Order`.`userId`, `main`.`Order`.`partnerId`, `main`.`Order`.`orderType`, `main`.`Order`.`serviceId`, `main`.`Order`.`status`, `main`.`Order`.`totalPrice`, `main`.`Order`.`paymentMethod`, `main`.`Order`.`attachedFiles`, `main`.`Order`.`customInputs`, `main`.`Order`.`userLat`, `main`.`Order`.`userLng`, `main`.`Order`.`partnerLat`, `main`.`Order`.`partnerLng`, `main`.`Order`.`createdAt`, `main`.`Order`.`updatedAt` FROM `main`.`Order` WHERE 1=1 ORDER BY `main`.`Order`.`createdAt` DESC LIMIT ? OFFSET ?
- GET /api/partners 200 in 67ms
- GET /api/orders 200 in 69ms
- GET /api/alerts 200 in 74ms
-prisma:query SELECT `main`.`SLAAlert`.`id`, `main`.`SLAAlert`.`orderId`, `main`.`SLAAlert`.`partnerName`, `main`.`SLAAlert`.`partnerPhone`, `main`.`SLAAlert`.`createdAt`, `main`.`SLAAlert`.`resolved` FROM `main`.`SLAAlert` WHERE 1=1 ORDER BY `main`.`SLAAlert`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Banner`.`id`, `main`.`Banner`.`imageUrl`, `main`.`Banner`.`text`, `main`.`Banner`.`isActive`, `main`.`Banner`.`createdAt` FROM `main`.`Banner` WHERE `main`.`Banner`.`isActive` = ? LIMIT ? OFFSET ?
- GET /api/banners 200 in 64ms
- GET /api/categories 200 in 57ms
-prisma:query SELECT `main`.`Category`.`id`, `main`.`Category`.`name`, `main`.`Category`.`coverImage`, `main`.`Category`.`createdAt` FROM `main`.`Category` WHERE 1=1 ORDER BY `main`.`Category`.`name` ASC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?,?,?,?) LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`Order`.`id`, `main`.`Order`.`userId`, `main`.`Order`.`partnerId`, `main`.`Order`.`orderType`, `main`.`Order`.`serviceId`, `main`.`Order`.`status`, `main`.`Order`.`totalPrice`, `main`.`Order`.`paymentMethod`, `main`.`Order`.`attachedFiles`, `main`.`Order`.`customInputs`, `main`.`Order`.`userLat`, `main`.`Order`.`userLng`, `main`.`Order`.`partnerLat`, `main`.`Order`.`partnerLng`, `main`.`Order`.`createdAt`, `main`.`Order`.`updatedAt` FROM `main`.`Order` WHERE 1=1 ORDER BY `main`.`Order`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`User`.`id`, `main`.`User`.`phone`, `main`.`User`.`password`, `main`.`User`.`firstName`, `main`.`User`.`lastName`, `main`.`User`.`avatarUrl`, `main`.`User`.`role`, `main`.`User`.`partnerTier`, `main`.`User`.`partnerStatus`, `main`.`User`.`createdAt`, `main`.`User`.`updatedAt` FROM `main`.`User` WHERE `main`.`User`.`role` = ? ORDER BY `main`.`User`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`PartnerProfile`.`id`, `main`.`PartnerProfile`.`userId`, `main`.`PartnerProfile`.`businessName`, `main`.`PartnerProfile`.`address`, `main`.`PartnerProfile`.`lat`, `main`.`PartnerProfile`.`lng`, `main`.`PartnerProfile`.`status`, `main`.`PartnerProfile`.`tier`, `main`.`PartnerProfile`.`createdAt`, `main`.`PartnerProfile`.`updatedAt` FROM `main`.`PartnerProfile` WHERE `main`.`PartnerProfile`.`userId` IN (?,?) LIMIT ? OFFSET ?
- GET /api/services 200 in 57ms
- GET /api/orders 200 in 58ms
- GET /api/partners 200 in 63ms
-prisma:query SELECT `main`.`SLAAlert`.`id`, `main`.`SLAAlert`.`orderId`, `main`.`SLAAlert`.`partnerName`, `main`.`SLAAlert`.`partnerPhone`, `main`.`SLAAlert`.`createdAt`, `main`.`SLAAlert`.`resolved` FROM `main`.`SLAAlert` WHERE 1=1 ORDER BY `main`.`SLAAlert`.`createdAt` DESC LIMIT ? OFFSET ?
- GET /api/alerts 200 in 66ms
- GET /services 200 in 50ms
-prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?,?,?,?) LIMIT ? OFFSET ?
- GET /api/services 200 in 16ms
-prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`name`, `main`.`Service`.`iconImage`, `main`.`Service`.`isBlocked`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
-prisma:query SELECT `main`.`CustomField`.`id`, `main`.`CustomField`.`serviceId`, `main`.`CustomField`.`fieldName`, `main`.`CustomField`.`fieldType`, `main`.`CustomField`.`isRequired` FROM `main`.`CustomField` WHERE `main`.`CustomField`.`serviceId` IN (?,?,?,?,?,?) LIMIT ? OFFSET ?
- GET /api/services 200 in 16ms
- GET /orders 200 in 56ms
-[Socket.io] Client connected: uL8VlsN-YYPFZnrDAAAC
-[Socket.io] Client disconnected: uL8VlsN-YYPFZnrDAAAC
- GET / 200 in 87ms
- ○ Compiling /_not-found ...
- ✓ Compiled /_not-found in 874ms (1453 modules)
- GET /_next/static/css/app/layout.css?v=1789380720906 404 in 1165ms
- GET /_next/static/chunks/webpack.js?v=1789380720906 404 in 1181ms
- GET /_next/static/chunks/main-app.js?v=1789380720906 404 in 1181ms
- GET /_next/static/chunks/app-pages-internals.js 404 in 1179ms
- GET /_next/static/chunks/app/page.js 404 in 1179ms
- GET /_next/static/chunks/app/layout.js 404 in 1177ms
- ✓ Compiled /admin in 155ms (720 modules)
- ⨯ Error: Cannot find module './948.js'
-Require stack:
-- /app/.next/server/webpack-runtime.js
-- /app/.next/server/app/admin/page.js
-- /app/node_modules/next/dist/server/require.js
-- /app/node_modules/next/dist/server/load-components.js
-- /app/node_modules/next/dist/build/utils.js
-- /app/node_modules/next/dist/server/dev/hot-middleware.js
-- /app/node_modules/next/dist/server/dev/hot-reloader-webpack.js
-- /app/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
-- /app/node_modules/next/dist/server/lib/router-server.js
-- /app/node_modules/next/dist/server/lib/start-server.js
-- /app/node_modules/next/dist/server/next.js
-- /app/server.js
-    at Function.<anonymous> (node:internal/modules/cjs/loader:1383:15)
-    at /app/node_modules/next/dist/server/require-hook.js:55:36
-    at defaultResolveImpl (node:internal/modules/cjs/loader:1025:19)
-    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1030:22)
-    at Function._load (node:internal/modules/cjs/loader:1192:37)
-    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
-    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
-    at Module.<anonymous> (node:internal/modules/cjs/loader:1463:12)
-    at mod.require (/app/node_modules/next/dist/server/require-hook.js:65:28)
-    at require (node:internal/modules/helpers:147:16)
-    at __webpack_require__.f.require (/app/.next/server/webpack-runtime.js:198:28)
-    at /app/.next/server/webpack-runtime.js:111:40
-    at Array.reduce (<anonymous>)
-    at __webpack_require__.e (/app/.next/server/webpack-runtime.js:110:67)
-    at Array.map (<anonymous>)
-    at __webpack_require__.X (/app/.next/server/webpack-runtime.js:162:22)
-    at /app/.next/server/app/admin/page.js:1:18244
-    at Object.<anonymous> (/app/.next/server/app/admin/page.js:1:18293)
-    at Module._compile (node:internal/modules/cjs/loader:1705:14)
-    at Object..js (node:internal/modules/cjs/loader:1838:10)
-    at Module.load (node:internal/modules/cjs/loader:1441:32)
-    at Function._load (node:internal/modules/cjs/loader:1263:12)
-    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
-    at wrapModuleLoad (node:internal/modules/cjs/loader:237:24)
-    at Module.<anonymous> (node:internal/modules/cjs/loader:1463:12)
-    at mod.require (/app/node_modules/next/dist/server/require-hook.js:65:28)
-    at require (node:internal/modules/helpers:147:16)
-    at requirePage (/app/node_modules/next/dist/server/require.js:109:84)
-    at /app/node_modules/next/dist/server/load-components.js:103:84
-    at async loadComponentsImpl (/app/node_modules/next/dist/server/load-components.js:103:26)
-    at async DevServer.findPageComponentsImpl (/app/node_modules/next/dist/server/next-server.js:714:36)
-    at async DevServer.findPageComponents (/app/node_modules/next/dist/server/dev/next-dev-server.js:577:20)
-    at async DevServer.renderPageComponent (/app/node_modules/next/dist/server/base-server.js:1910:24)
-    at async DevServer.renderToResponseImpl (/app/node_modules/next/dist/server/base-server.js:1962:32)
-    at async DevServer.pipeImpl (/app/node_modules/next/dist/server/base-server.js:922:25)
-    at async NextNodeServer.handleCatchallRenderRequest (/app/node_modules/next/dist/server/next-server.js:272:17)
-    at async DevServer.handleRequestImpl (/app/node_modules/next/dist/server/base-server.js:818:17)
-    at async /app/node_modules/next/dist/server/dev/next-dev-server.js:339:20
-    at async Span.traceAsyncFn (/app/node_modules/next/dist/trace/trace.js:154:20)
-    at async DevServer.handleRequest (/app/node_modules/next/dist/server/dev/next-dev-server.js:336:24)
-    at async invokeRender (/app/node_modules/next/dist/server/lib/router-server.js:179:21)
-    at async handleRequest (/app/node_modules/next/dist/server/lib/router-server.js:359:24)
-    at async NextCustomServer.requestHandlerImpl [as requestHandler] (/app/node_modules/next/dist/server/lib/router-server.js:383:13) {
-  code: 'MODULE_NOT_FOUND',
-  requireStack: [
-    '/app/.next/server/webpack-runtime.js',
-    '/app/.next/server/app/admin/page.js',
-    '/app/node_modules/next/dist/server/require.js',
-    '/app/node_modules/next/dist/server/load-components.js',
-    '/app/node_modules/next/dist/build/utils.js',
-    '/app/node_modules/next/dist/server/dev/hot-middleware.js',
-    '/app/node_modules/next/dist/server/dev/hot-reloader-webpack.js',
-    '/app/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js',
-    '/app/node_modules/next/dist/server/lib/router-server.js',
-    '/app/node_modules/next/dist/server/lib/start-server.js',
-    '/app/node_modules/next/dist/server/next.js',
-    '/app/server.js'
-  ],
-  page: '/admin'
-}
- ○ Compiling /_error ...
- ✓ Compiled /_error in 2.2s (1690 modules)
- GET /admin 500 in 2576ms
- ✓ Compiled /services in 329ms (773 modules)
- GET /services 200 in 531ms
- GET /_next/static/css/app/layout.css?v=1789380727698 404 in 84ms
- GET /_next/static/chunks/main-app.js?v=1789380727698 404 in 115ms
- GET /_next/static/chunks/app-pages-internals.js 404 in 114ms
- GET /_next/static/chunks/app/services/page.js 404 in 113ms
- GET /_next/static/chunks/app/layout.js 404 in 115ms
+ ✓ Compiled /services in 886ms (1497 modules)
+ GET /services 200 in 1078ms
+prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`categoryId`, `main`.`Service`.`name`, `main`.`Service`.`imageUrl`, `main`.`Service`.`isActive`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`ServiceField`.`id`, `main`.`ServiceField`.`serviceId`, `main`.`ServiceField`.`label`, `main`.`ServiceField`.`fieldType`, `main`.`ServiceField`.`required` FROM `main`.`ServiceField` WHERE `main`.`ServiceField`.`serviceId` IN (?,?) LIMIT ? OFFSET ?
+ GET /api/services 200 in 31ms
+prisma:query SELECT `main`.`Service`.`id`, `main`.`Service`.`categoryId`, `main`.`Service`.`name`, `main`.`Service`.`imageUrl`, `main`.`Service`.`isActive`, `main`.`Service`.`createdAt` FROM `main`.`Service` WHERE 1=1 ORDER BY `main`.`Service`.`createdAt` DESC LIMIT ? OFFSET ?
+prisma:query SELECT `main`.`ServiceField`.`id`, `main`.`ServiceField`.`serviceId`, `main`.`ServiceField`.`label`, `main`.`ServiceField`.`fieldType`, `main`.`ServiceField`.`required` FROM `main`.`ServiceField` WHERE `main`.`ServiceField`.`serviceId` IN (?,?) LIMIT ? OFFSET ?
+ GET /api/services 200 in 12ms
  ○ Compiling /orders ...
- ✓ Compiled /orders in 704ms (849 modules)
- GET /orders 200 in 921ms
- GET /_next/static/css/app/layout.css?v=1789380729773 404 in 47ms
- GET /_next/static/chunks/app/orders/page.js 404 in 102ms
- GET /_next/static/chunks/app-pages-internals.js 404 in 105ms
- GET /_next/static/chunks/main-app.js?v=1789380729773 404 in 108ms
- GET /_next/static/chunks/app/layout.js 404 in 101ms
-<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat '/app/.next/server/vendor-chunks/motion-utils.js'
-<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/motion-utils' in /app/.next/server for build dependencies doesn't lead to expected result '/app/.next/server/vendor-chunks/motion-utils.js', but to 'Error: Can't resolve './vendor-chunks/motion-utils' in '/app/.next/server'' instead. Resolving dependencies are ignored for this path.
-<w>  at resolve commonjs file ./vendor-chunks/motion-utils (expected /app/.next/server/vendor-chunks/motion-utils.js)
-<w>  at file dependencies /app/.next/server/webpack-runtime.js
-<w>  at file /app/.next/server/webpack-runtime.js
-<w>  at file dependencies /app/.next/server/app/api/alerts/route.js
-<w>  at file /app/.next/server/app/api/alerts/route.js
-<w>  at file dependencies /app/node_modules/next/dist/server/require.js
-<w>  at file /app/node_modules/next/dist/server/require.js
-<w>  at file dependencies /app/node_modules/next/dist/server/load-components.js
-<w>  at file /app/node_modules/next/dist/server/load-components.js
-<w>  at file dependencies /app/node_modules/next/dist/build/utils.js
-<w>  at file /app/node_modules/next/dist/build/utils.js
-<w>  at file dependencies /app/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
-<w>  at file /app/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
-<w>  at resolve commonjs /app/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
-<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/motion-dom' in /app/.next/server for build dependencies doesn't lead to expected result '/app/.next/server/vendor-chunks/motion-dom.js', but to 'Error: Can't resolve './vendor-chunks/motion-dom' in '/app/.next/server'' instead. Resolving dependencies are ignored for this path.
-<w>  at resolve commonjs file ./vendor-chunks/motion-dom (expected /app/.next/server/vendor-chunks/motion-dom.js)
-<w>  at file dependencies /app/.next/server/webpack-runtime.js
-<w>  at file /app/.next/server/webpack-runtime.js
-<w>  at file dependencies /app/.next/server/app/api/alerts/route.js
-<w>  at file /app/.next/server/app/api/alerts/route.js
-<w>  at file dependencies /app/node_modules/next/dist/server/require.js
-<w>  at file /app/node_modules/next/dist/server/require.js
-<w>  at file dependencies /app/node_modules/next/dist/server/load-components.js
-<w>  at file /app/node_modules/next/dist/server/load-components.js
-<w>  at file dependencies /app/node_modules/next/dist/build/utils.js
-<w>  at file /app/node_modules/next/dist/build/utils.js
-<w>  at file dependencies /app/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
-<w>  at file /app/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
-<w>  at resolve commonjs /app/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
- ✓ Compiled in 6.4s (941 modules)
- ✓ Compiled in 3.4s (994 modules)
+ ✓ Compiled /orders in 844ms (1613 modules)
+ GET /orders 200 in 955ms
+[Socket.io] Client connected: r3dVv5MAr2JmOtQFAAAA
+[Socket.io] Client disconnected: r3dVv5MAr2JmOtQFAAAA
+ ✓ Compiled in 480ms (764 modules)
+ ✓ Compiled in 249ms (764 modules)
+ ✓ Compiled in 481ms (764 modules)
+ ✓ Compiled in 323ms (764 modules)
  ○ Compiling / ...
- ✓ Compiled / in 1541ms (754 modules)
- GET / 200 in 2249ms
+ ✓ Compiled / in 572ms (714 modules)
+ GET / 200 in 928ms
  ○ Compiling /_not-found ...
- ✓ Compiled /_not-found in 1449ms (1689 modules)
- GET /_next/static/chunks/main-app.js?v=1789393938297 404 in 1783ms
- GET /_next/static/chunks/app-pages-internals.js 404 in 1757ms
- ✓ Compiled /admin in 234ms (766 modules)
- GET /admin 200 in 343ms
- GET /_next/static/chunks/main-app.js?v=1789393941839 404 in 88ms
- GET /_next/static/chunks/app-pages-internals.js 404 in 85ms
- GET /_next/static/chunks/app/admin/page.js 404 in 84ms
- ○ Compiling /services ...
- ✓ Compiled /services in 834ms (777 modules)
- GET /services 200 in 1005ms
- GET /_next/static/chunks/main-app.js?v=1789393943943 404 in 107ms
- GET /_next/static/chunks/app-pages-internals.js 404 in 83ms
- GET /_next/static/chunks/app/services/page.js 404 in 82ms
- ✓ Compiled /orders in 309ms (853 modules)
- GET /orders 200 in 471ms
- GET /_next/static/chunks/main-app.js?v=1789393945579 404 in 118ms
- GET /_next/static/chunks/app-pages-internals.js 404 in 122ms
- GET /_next/static/chunks/app/orders/page.js 404 in 118ms
- ✓ Compiled in 3.1s (998 modules)
- ✓ Compiled in 391ms (949 modules)
- ✓ Compiled / in 413ms (754 modules)
- GET / 200 in 788ms
- ✓ Compiled /_not-found in 480ms (1692 modules)
- GET /_next/static/chunks/app-pages-internals.js 404 in 636ms
- GET /_next/static/chunks/main-app.js?v=1789394049030 404 in 643ms
- ○ Compiling /admin ...
- ✓ Compiled /admin in 682ms (768 modules)
- GET /admin 200 in 806ms
- GET /_next/static/chunks/main-app.js?v=1789394051651 404 in 84ms
- GET /_next/static/chunks/app-pages-internals.js 404 in 82ms
- ○ Compiling /services ...
- ✓ Compiled /services in 879ms (779 modules)
- GET /services 200 in 1167ms
- GET /_next/static/chunks/main-app.js?v=1789394053825 404 in 118ms
- GET /_next/static/chunks/app-pages-internals.js 404 in 116ms
- GET /_next/static/chunks/app/services/page.js 404 in 113ms
- ✓ Compiled /orders in 373ms (856 modules)
- GET /orders 200 in 559ms
- GET /_next/static/chunks/main-app.js?v=1789394055610 404 in 108ms
- GET /_next/static/chunks/app-pages-internals.js 404 in 106ms
+ ✓ Compiled /_not-found in 782ms (1467 modules)
+ GET /_next/static/css/app/layout.css?v=1789401550346 404 in 988ms
+ GET /_next/static/chunks/main-app.js?v=1789401550346 404 in 977ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 977ms
+ GET /_next/static/chunks/app/page.js 404 in 976ms
+ ✓ Compiled /admin in 419ms (728 modules)
+ GET /admin 200 in 518ms
+ GET /_next/static/css/app/layout.css?v=1789401553014 404 in 39ms
+ GET /_next/static/chunks/main-app.js?v=1789401553014 404 in 74ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 73ms
+ ✓ Compiled /services in 297ms (740 modules)
+ GET /services 200 in 417ms
+ GET /_next/static/css/app/layout.css?v=1789401554526 404 in 80ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 86ms
+ GET /_next/static/chunks/app/services/page.js 404 in 86ms
+ GET /_next/static/chunks/main-app.js?v=1789401554526 404 in 90ms
+ ✓ Compiled /orders in 271ms (817 modules)
+ GET /orders 200 in 390ms
+ GET /_next/static/css/app/layout.css?v=1789401556047 404 in 65ms
+ GET /_next/static/chunks/main-app.js?v=1789401556047 404 in 97ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 97ms
+ GET /_next/static/chunks/app/orders/page.js 404 in 97ms
+ ✓ Compiled in 495ms (764 modules)

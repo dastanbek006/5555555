@@ -8,115 +8,88 @@ generator client {
 }
 
 model User {
-  id            String          @id @default(uuid())
-  phone         String          @unique
-  password      String
-  firstName     String
-  lastName      String
-  avatarUrl     String?
-  role          String          @default("USER") // USER, PARTNER, ADMIN
-  partnerTier   String          @default("NONE") // NONE, ODDIY, PRO, VIP
-  partnerStatus String          @default("NONE") // NONE, PENDING, APPROVED, REJECTED
-  partnerProfile PartnerProfile?
-  products      Product[]
-  reviews       Review[]
-  orders        Order[]         @relation("UserOrders")
-  assignedOrders Order[]        @relation("PartnerOrders")
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  id           String    @id @default(uuid())
+  firstName    String
+  lastName     String
+  phone        String    @unique
+  passwordHash String
+  avatarUrl    String?
+  role         String    @default("CLIENT") // CLIENT, PARTNER, ADMIN
+  partner      Partner?
+  products     Product[]
+  orders       Order[]   @relation("UserOrders")
+  assignedOrders Order[] @relation("PartnerOrders")
+  createdAt    DateTime  @default(now())
 }
 
-model PartnerProfile {
-  id           String   @id @default(uuid())
-  userId       String   @unique
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  businessName String?
-  address      String?
-  lat          Float?
-  lng          Float?
-  status       String   @default("PENDING") // PENDING, APPROVED, REJECTED
-  tier         String   @default("ODDIY")   // ODDIY, PRO, VIP
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+model Partner {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  level     String   @default("STANDARD") // STANDARD, PRO, VIP
+  status    String   @default("PENDING")  // PENDING, APPROVED, REJECTED
+  alerts    Alert[]
+  createdAt DateTime @default(now())
 }
 
 model Category {
-  id         String    @id @default(uuid())
-  name       String    @unique
-  coverImage String
-  products   Product[]
-  createdAt  DateTime  @default(now())
+  id       String    @id @default(uuid())
+  name     String    @unique
+  imageUrl String
+  services Service[]
+  products Product[]
+}
+
+model Service {
+  id          String         @id @default(uuid())
+  categoryId  String
+  category    Category       @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  name        String
+  imageUrl    String
+  isActive    Boolean        @default(true)
+  fields      ServiceField[]
+  createdAt   DateTime       @default(now())
+}
+
+model ServiceField {
+  id        String   @id @default(uuid())
+  serviceId String
+  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  label     String
+  fieldType String   @default("TEXT") // TEXT, FILE, NUMBER, SELECT
+  required  Boolean  @default(true)
 }
 
 model Product {
   id          String      @id @default(uuid())
-  title       String
+  partnerId   String
+  partner     User        @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  categoryId  String?
+  category    Category?   @relation(fields: [categoryId], references: [id])
+  name        String
   description String?
   price       Float
-  stock       Int
-  images      String      // JSON stringified array of image URLs (max 3)
-  categoryId  String
-  category    Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  isBlocked   Boolean     @default(false)
-  sellerId    String
-  seller      User        @relation(fields: [sellerId], references: [id], onDelete: Cascade)
-  reviews     Review[]
+  stock       Int         @default(0)
+  images      String      // JSON stringified array of max 3 image URLs
+  isActive    Boolean     @default(true)
   orderItems  OrderItem[]
   createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-}
-
-model Review {
-  id        String   @id @default(uuid())
-  rating    Int      @default(5)
-  comment   String
-  productId String
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  createdAt DateTime @default(now())
-}
-
-model Service {
-  id           String        @id @default(uuid())
-  name         String
-  iconImage    String
-  videoUrl     String?       // Video demo / promo URL
-  isBlocked    Boolean       @default(false)
-  customFields CustomField[]
-  createdAt    DateTime      @default(now())
-}
-
-model CustomField {
-  id        String   @id @default(uuid())
-  serviceId String
-  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
-  fieldName String
-  fieldType String   @default("text") // text, file, number, select
-  isRequired Boolean @default(true)
 }
 
 model Order {
-  id            String      @id @default(uuid())
-  userId        String
-  user          User        @relation("UserOrders", fields: [userId], references: [id])
-  partnerId     String?
-  partner       User?       @relation("PartnerOrders", fields: [partnerId], references: [id])
-  orderType     String      @default("PRODUCT") // PRODUCT, SERVICE
-  serviceId     String?
-  status        String      @default("KUTILMOQDA") // KUTILMOQDA, KORIB_CHIQILMOQDA, YOLGA_CHIQDI, TOPSHIRILDI, BEKOR_QILINDI
-  totalPrice    Float
-  paymentMethod String      @default("Naqd to'lov")
-  attachedFiles String?     // JSON stringified array of relative file paths (deleted when status = TOPSHIRILDI)
-  customInputs  String?     // JSON stringified object of form responses
-  userLat       Float?
-  userLng       Float?
-  partnerLat    Float?
-  partnerLng    Float?
-  items         OrderItem[]
-  alerts        SLAAlert[]
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  id          String      @id @default(uuid())
+  userId      String
+  user        User        @relation("UserOrders", fields: [userId], references: [id])
+  partnerId   String?
+  partner     User?       @relation("PartnerOrders", fields: [partnerId], references: [id])
+  type        String      @default("PRODUCT") // SERVICE, PRODUCT
+  status      String      @default("PENDING") // PENDING, REVIEWING, ON_WAY, DELIVERED
+  totalPrice  Float
+  files       OrderFile[]
+  items       OrderItem[]
+  alerts      Alert[]
+  createdAt   DateTime    @default(now())
+  deliveredAt DateTime?
 }
 
 model OrderItem {
@@ -129,20 +102,28 @@ model OrderItem {
   price     Float
 }
 
-model Banner {
+model OrderFile {
   id        String   @id @default(uuid())
-  imageUrl  String
-  text      String
-  isActive  Boolean  @default(true)
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  fileUrl   String
+  fileType  String
+  isDeleted Boolean  @default(false)
+}
+
+model Alert {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  partnerId String
+  partner   Partner  @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  message   String
   createdAt DateTime @default(now())
 }
 
-model SLAAlert {
-  id           String   @id @default(uuid())
-  orderId      String
-  order        Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  partnerName  String
-  partnerPhone String
-  createdAt    DateTime @default(now())
-  resolved     Boolean  @default(false)
+model Banner {
+  id       String  @id @default(uuid())
+  imageUrl String
+  text     String
+  isActive Boolean @default(true)
 }

@@ -14,6 +14,7 @@ export async function GET(
         user: true,
         partner: true,
         items: { include: { product: true } },
+        files: true,
       },
     });
 
@@ -35,41 +36,41 @@ export async function PATCH(
     const { status } = await request.json();
     const { id } = params;
 
-    const existingOrder = await prisma.order.findUnique({ where: { id } });
+    const existingOrder = await prisma.order.findUnique({
+      where: { id },
+      include: { files: true },
+    });
+
     if (!existingOrder) {
       return NextResponse.json({ error: 'Buyurtma topilmadi' }, { status: 404 });
     }
 
-    // STRICT PRIVACY HOOK: When marked TOPSHIRILDI, delete attached files from disk & clear DB reference
-    let attachedFiles = existingOrder.attachedFiles;
-
-    if (status === 'TOPSHIRILDI' && existingOrder.attachedFiles) {
-      try {
-        const fileList: string[] = JSON.parse(existingOrder.attachedFiles);
-        fileList.forEach((fileRelPath) => {
-          if (fileRelPath.startsWith('/uploads/')) {
-            const diskPath = path.join(process.cwd(), 'public', fileRelPath);
-            if (fs.existsSync(diskPath)) {
-              fs.unlinkSync(diskPath);
-              console.log(`[PRIVACY HOOK] Permanently deleted user file: ${diskPath}`);
-            }
+    // STRICT PRIVACY HOOK: When status = DELIVERED, soft delete and unlink attached files
+    if (status === 'DELIVERED' && existingOrder.files.length > 0) {
+      for (const file of existingOrder.files) {
+        if (file.fileUrl.startsWith('/uploads/')) {
+          const diskPath = path.join(process.cwd(), 'public', file.fileUrl);
+          if (fs.existsSync(diskPath)) {
+            fs.unlinkSync(diskPath);
           }
+        }
+        await prisma.orderFile.update({
+          where: { id: file.id },
+          data: { isDeleted: true },
         });
-      } catch (e) {
-        console.error('[PRIVACY HOOK ERROR]: Failed to delete files from disk', e);
       }
-      attachedFiles = null; // Purge reference in DB while maintaining order metadata
     }
 
     const updatedOrder = await prisma.order.update({
       where: { id },
       data: {
         status,
-        attachedFiles,
+        deliveredAt: status === 'DELIVERED' ? new Date() : null,
       },
       include: {
         user: true,
         partner: true,
+        files: true,
       },
     });
 

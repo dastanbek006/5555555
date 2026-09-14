@@ -47,6 +47,7 @@ function CheckoutContent() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          type: 'PRODUCT',
           orderType: 'PRODUCT',
           items: cartItems.map((item: any) => ({
             productId: item.product.id,
@@ -114,7 +115,7 @@ function CheckoutContent() {
             <div className="space-y-2">
               {cartItems.map((item: any) => (
                 <div key={item.product.id} className="flex items-center justify-between text-xs">
-                  <span className="text-slate-200">{item.product.title} x{item.quantity}</span>
+                  <span className="text-slate-200">{item.product.name || item.product.title} x{item.quantity}</span>
                   <span className="font-semibold text-slate-100">
                     {(item.product.price * item.quantity).toLocaleString()} so'm
                   </span>

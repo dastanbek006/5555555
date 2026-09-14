@@ -5,13 +5,14 @@ import prisma from '@/lib/prisma';
 export async function GET() {
   try {
     const products = await prisma.product.findMany({
-      where: { isBlocked: false },
-      include: { category: true, seller: true },
+      where: { isActive: true },
+      include: { category: true, partner: true },
       orderBy: { createdAt: 'desc' },
     });
 
     const parsed = products.map((p) => ({
       ...p,
+      title: p.name,
       images: JSON.parse(p.images || '[]'),
     }));
 
@@ -24,36 +25,37 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const cookieStore = cookies();
-    const userId = cookieStore.get('session_user_id')?.value;
+    const token = cookieStore.get('token')?.value;
 
-    let sellerId = userId;
-    if (!sellerId) {
-      const vipUser = await prisma.user.findFirst({ where: { partnerTier: 'VIP' } });
-      sellerId = vipUser?.id;
+    let partnerId = null;
+    if (token) {
+      const defaultPartner = await prisma.user.findFirst({ where: { role: 'PARTNER' } });
+      partnerId = defaultPartner?.id;
     }
 
-    if (!sellerId) {
+    if (!partnerId) {
+      const partnerUser = await prisma.user.findFirst({ where: { role: 'PARTNER' } });
+      partnerId = partnerUser?.id;
+    }
+
+    if (!partnerId) {
       return NextResponse.json({ error: 'Avtorizatsiyadan o\'ting' }, { status: 401 });
     }
 
-    const { title, description, price, stock, categoryId, images } = await request.json();
-
-    if (!title || !price || stock === undefined || !categoryId) {
-      return NextResponse.json({ error: 'Barcha ma\'lumotlarni kiriting' }, { status: 400 });
-    }
+    const { name, description, price, stock, categoryId, images } = await request.json();
 
     const imgArray = Array.isArray(images) ? images.slice(0, 3) : [];
 
     const product = await prisma.product.create({
       data: {
-        title,
+        name,
         description,
         price: parseFloat(price),
         stock: parseInt(stock, 10),
         categoryId,
-        sellerId,
+        partnerId,
         images: JSON.stringify(imgArray),
-        isBlocked: parseInt(stock, 10) <= 0,
+        isActive: parseInt(stock, 10) > 0,
       },
     });
 

@@ -86,7 +86,8 @@ export default function HomePage() {
   let processedProducts = products.filter((p) => {
     const matchesCat = selectedCategory === 'ALL' || p.categoryId === selectedCategory;
     const matchesSearch =
-      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (p.name && p.name.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (p.title && p.title.toLowerCase().includes(searchQuery.toLowerCase())) ||
       (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCat && matchesSearch;
   });
@@ -116,11 +117,11 @@ export default function HomePage() {
         )}
       </AnimatePresence>
 
-      {/* Top Banner Marquee Header */}
+      {/* VAZIFA 3 - Top Banner Marquee Header */}
       <header className="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/80">
         <div className="overflow-hidden bg-gradient-to-r from-blue-600/30 via-indigo-600/30 to-purple-600/30 py-1.5 px-4 border-b border-blue-500/20">
           <div className="whitespace-nowrap animate-marquee flex gap-8 text-xs font-medium text-blue-200">
-            <span className="flex items-center gap-1"><Sparkles size={12} className="text-amber-400" /> TM Smart Market — Zamonaviy E-Commerce & Service Platforma</span>
+            <span className="flex items-center gap-1"><Sparkles size={12} className="text-amber-400" /> Smart Bozor TM — Marketplace + Xizmatlar Platformasi</span>
             <span className="flex items-center gap-1"><Zap size={12} className="text-blue-400" /> Tezkor yetkazib berish</span>
             <span className="flex items-center gap-1"><ShieldCheck size={12} className="text-emerald-400" /> Talabalar uchun chegirma</span>
           </div>
@@ -137,7 +138,7 @@ export default function HomePage() {
             </motion.div>
             <div>
               <h1 className="font-extrabold text-base tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-slate-300">
-                TM Smart Market
+                Smart Bozor TM
               </h1>
               <p className="text-[10px] text-blue-400/90 font-medium">Ultra-Fast Service & Shopping</p>
             </div>
@@ -200,12 +201,14 @@ export default function HomePage() {
         </div>
       </header>
 
-      <main className="max-w-md mx-auto px-4 pt-4 space-y-6">
-        {/* Banner Carousel */}
+      {/* VAZIFA 3 Mobile-First (390px Optimized View) Layout */}
+      <main className="max-w-[390px] mx-auto px-4 pt-4 space-y-6">
+        {/* Banner Data Display with Framer Motion Animation */}
         {banners.length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', stiffness: 200, damping: 20 }}
             className="relative rounded-3xl overflow-hidden border border-slate-800/80 bg-slate-900/80 aspect-[21/9] shadow-2xl group"
           >
             <img
@@ -221,52 +224,42 @@ export default function HomePage() {
           </motion.div>
         )}
 
-        {/* Video Service Quick Highlight */}
-        <div className="bg-gradient-to-r from-blue-900/30 via-indigo-900/30 to-purple-900/30 border border-blue-500/20 rounded-2xl p-3.5 flex items-center justify-between shadow-xl">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-blue-600/20 text-blue-400 flex items-center justify-center border border-blue-500/30">
-              <Play size={18} className="fill-blue-400" />
-            </div>
-            <div>
-              <h3 className="font-bold text-xs text-slate-100">Xizmatlar Roliklari</h3>
-              <p className="text-[10px] text-slate-400">Video qo'llanmalarni tomosha qiling</p>
-            </div>
-          </div>
-          <Link
-            href="/services"
-            className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-semibold transition-all shadow-md shadow-blue-600/20"
-          >
-            Ko'rish →
-          </Link>
-        </div>
-
-        {/* Categories */}
+        {/* VAZIFA 3 - Category Cards Layout (Rasm + Nom) */}
         <div>
           <h2 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider mb-3">Kategoriyalar</h2>
-          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
-            <button
+          <div className="grid grid-cols-3 gap-2">
+            <motion.button
+              whileTap={{ scale: 0.95 }}
               onClick={() => setSelectedCategory('ALL')}
-              className={`px-4 py-2 rounded-2xl text-xs font-semibold whitespace-nowrap transition-all border ${
+              className={`p-3 rounded-2xl text-xs font-bold flex flex-col items-center justify-center gap-1.5 transition-all border ${
                 selectedCategory === 'ALL'
                   ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-500/25'
                   : 'bg-slate-900/80 border-slate-800/80 text-slate-400 hover:text-white'
               }`}
             >
-              Barchasi
-            </button>
-            {categories.map((cat) => (
-              <button
+              <div className="w-8 h-8 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
+                <Sparkles size={18} />
+              </div>
+              <span>Barchasi</span>
+            </motion.button>
+
+            {categories.map((cat, idx) => (
+              <motion.button
                 key={cat.id}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-3.5 py-2 rounded-2xl text-xs font-semibold whitespace-nowrap flex items-center gap-2 transition-all border ${
+                className={`p-2.5 rounded-2xl text-xs font-semibold flex flex-col items-center text-center justify-between gap-1.5 transition-all border ${
                   selectedCategory === cat.id
                     ? 'bg-blue-600 border-blue-500 text-white shadow-lg shadow-blue-500/25'
                     : 'bg-slate-900/80 border-slate-800/80 text-slate-400 hover:text-white'
                 }`}
               >
-                <img src={cat.coverImage} alt={cat.name} className="w-5 h-5 rounded-lg object-cover" />
-                <span>{cat.name}</span>
-              </button>
+                <img src={cat.imageUrl || cat.coverImage} alt={cat.name} className="w-10 h-10 rounded-xl object-cover shadow-sm" />
+                <span className="line-clamp-1 text-[11px] font-bold">{cat.name}</span>
+              </motion.button>
             ))}
           </div>
         </div>
@@ -287,6 +280,7 @@ export default function HomePage() {
                 : [];
               const mainImg = images[0] || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400';
               const isAdded = (cart[p.id] || 0) > 0;
+              const prodName = p.name || p.title;
 
               return (
                 <motion.div
@@ -295,17 +289,17 @@ export default function HomePage() {
                   className="bg-slate-900/70 border border-slate-800/80 rounded-3xl overflow-hidden flex flex-col justify-between hover:border-slate-700 transition-all shadow-xl"
                 >
                   <div
-                    onClick={() => setSelectedProductForModal(p)}
+                    onClick={() => setSelectedProductForModal({ ...p, title: prodName })}
                     className="cursor-pointer"
                   >
                     <div className="relative aspect-square w-full bg-slate-950 overflow-hidden">
-                      <img src={mainImg} alt={p.title} className="w-full h-full object-cover" />
+                      <img src={mainImg} alt={prodName} className="w-full h-full object-cover" />
                       <span className="absolute top-2.5 right-2.5 bg-slate-950/80 backdrop-blur-md px-2 py-0.5 rounded-full text-[10px] text-blue-400 border border-blue-500/20 font-semibold">
                         Zaxira: {p.stock}
                       </span>
                     </div>
                     <div className="p-3">
-                      <h3 className="font-bold text-xs text-slate-100 line-clamp-1">{p.title}</h3>
+                      <h3 className="font-bold text-xs text-slate-100 line-clamp-1">{prodName}</h3>
                       <p className="text-[10px] text-slate-400 line-clamp-1 mt-0.5">{p.description}</p>
                       <div className="mt-2 flex items-center justify-between">
                         <span className="font-black text-sm text-blue-400">

@@ -1,35 +1,37 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import jwt from 'jsonwebtoken';
 import prisma from '@/lib/prisma';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'smart_bozor_tm_jwt_secret_key_2026';
 
 export async function GET() {
   try {
     const cookieStore = cookies();
-    const userId = cookieStore.get('session_user_id')?.value;
+    const token = cookieStore.get('token')?.value;
 
-    if (!userId) {
-      // Return default guest / admin fallback user for easy dev testing
-      const adminUser = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
-      if (adminUser) {
+    if (!token) {
+      // Fallback guest client
+      const defaultUser = await prisma.user.findFirst({ where: { role: 'CLIENT' } });
+      if (defaultUser) {
         return NextResponse.json({
           user: {
-            id: adminUser.id,
-            phone: adminUser.phone,
-            firstName: adminUser.firstName,
-            lastName: adminUser.lastName,
-            role: adminUser.role,
-            partnerTier: adminUser.partnerTier,
-            partnerStatus: adminUser.partnerStatus,
-            avatarUrl: adminUser.avatarUrl,
+            id: defaultUser.id,
+            firstName: defaultUser.firstName,
+            lastName: defaultUser.lastName,
+            phone: defaultUser.phone,
+            role: defaultUser.role,
+            avatarUrl: defaultUser.avatarUrl,
           },
         });
       }
       return NextResponse.json({ user: null });
     }
 
+    const decoded: any = jwt.verify(token, JWT_SECRET);
     const user = await prisma.user.findUnique({
-      where: { id: userId },
-      include: { partnerProfile: true },
+      where: { id: decoded.userId },
+      include: { partner: true },
     });
 
     if (!user) {
@@ -39,16 +41,15 @@ export async function GET() {
     return NextResponse.json({
       user: {
         id: user.id,
-        phone: user.phone,
         firstName: user.firstName,
         lastName: user.lastName,
+        phone: user.phone,
         role: user.role,
-        partnerTier: user.partnerTier,
-        partnerStatus: user.partnerStatus,
         avatarUrl: user.avatarUrl,
+        partner: user.partner,
       },
     });
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    return NextResponse.json({ user: null });
   }
 }

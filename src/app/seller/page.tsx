@@ -8,7 +8,7 @@ export default function VIPSellerDashboard() {
   const [categories, setCategories] = useState<any[]>([]);
 
   // Form state
-  const [title, setTitle] = useState('');
+  const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [stock, setStock] = useState('');
@@ -42,7 +42,7 @@ export default function VIPSellerDashboard() {
 
   const handleCreateProduct = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title || !price || !stock || !categoryId) {
+    if (!name || !price || !stock || !categoryId) {
       alert("Barcha kerakli maydonlarni to'ldiring");
       return;
     }
@@ -52,7 +52,8 @@ export default function VIPSellerDashboard() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          title,
+          name,
+          title: name,
           description,
           price,
           stock,
@@ -62,7 +63,7 @@ export default function VIPSellerDashboard() {
       });
 
       if (res.ok) {
-        setTitle('');
+        setName('');
         setDescription('');
         setPrice('');
         setStock('');
@@ -124,8 +125,8 @@ export default function VIPSellerDashboard() {
               <label className="text-[10px] text-slate-400 block mb-1">Nomi</label>
               <input
                 type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="Mahsulot nomi"
                 className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-amber-500"
                 required
@@ -247,11 +248,11 @@ export default function VIPSellerDashboard() {
                 <div className="flex items-center gap-3">
                   <img
                     src={Array.isArray(p.images) && p.images[0] ? p.images[0] : 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400'}
-                    alt={p.title}
+                    alt={p.name || p.title}
                     className="w-12 h-12 rounded-xl object-cover"
                   />
                   <div>
-                    <h3 className="font-semibold text-xs text-slate-100">{p.title}</h3>
+                    <h3 className="font-semibold text-xs text-slate-100">{p.name || p.title}</h3>
                     <p className="text-[10px] text-amber-400 font-bold">
                       {p.price.toLocaleString()} so'm
                     </p>

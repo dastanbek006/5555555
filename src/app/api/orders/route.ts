@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
+import jwt from 'jsonwebtoken';
 import prisma from '@/lib/prisma';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'smart_bozor_tm_jwt_secret_key_2026';
 
 export async function GET() {
   try {
@@ -9,6 +12,7 @@ export async function GET() {
         user: true,
         partner: true,
         items: { include: { product: true } },
+        files: true,
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -21,10 +25,20 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const cookieStore = cookies();
-    let userId = cookieStore.get('session_user_id')?.value;
+    const token = cookieStore.get('token')?.value;
+
+    let userId = null;
+    if (token) {
+      try {
+        const decoded: any = jwt.verify(token, JWT_SECRET);
+        userId = decoded.userId;
+      } catch (e) {
+        // Token decode failed
+      }
+    }
 
     if (!userId) {
-      const defaultUser = await prisma.user.findFirst({ where: { role: 'USER' } });
+      const defaultUser = await prisma.user.findFirst();
       userId = defaultUser?.id;
     }
 
@@ -32,16 +46,16 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Avtorizatsiyadan o\'ting' }, { status: 401 });
     }
 
-    const { orderType, items, serviceId, customInputs, attachedFiles, userLat, userLng } = await request.json();
+    const { type, items, attachedFiles } = await request.json();
 
     let totalPrice = 0;
     const orderItemsData = [];
 
-    if (orderType === 'PRODUCT' && Array.isArray(items)) {
+    if (type === 'PRODUCT' && Array.isArray(items)) {
       for (const item of items) {
         const product = await prisma.product.findUnique({ where: { id: item.productId } });
         if (!product || product.stock < item.quantity) {
-          return NextResponse.json({ error: `Mahsulot zaxirasi yetarli emas: ${product?.title}` }, { status: 400 });
+          return NextResponse.json({ error: `Mahsulot zaxirasi yetarli emas` }, { status: 400 });
         }
 
         totalPrice += product.price * item.quantity;
@@ -57,38 +71,41 @@ export async function POST(request: Request) {
           where: { id: product.id },
           data: {
             stock: updatedStock,
-            isBlocked: updatedStock <= 0,
+            isActive: updatedStock > 0,
           },
         });
       }
     } else {
-      totalPrice = 15000; // Fixed default service base price
+      totalPrice = 15000;
     }
 
-    // Assign to an available partner
     const partner = await prisma.user.findFirst({
-      where: { role: 'PARTNER', partnerStatus: 'APPROVED' },
+      where: { role: 'PARTNER' },
     });
 
     const order = await prisma.order.create({
       data: {
         userId,
         partnerId: partner?.id || null,
-        orderType: orderType || 'PRODUCT',
-        serviceId: serviceId || null,
+        type: type || 'PRODUCT',
+        status: 'PENDING',
         totalPrice,
-        paymentMethod: "Naqd to'lov",
-        attachedFiles: attachedFiles ? JSON.stringify(attachedFiles) : null,
-        customInputs: customInputs ? JSON.stringify(customInputs) : null,
-        userLat: userLat || 41.2995,
-        userLng: userLng || 69.2401,
         items: {
           create: orderItemsData,
         },
+        files: attachedFiles
+          ? {
+              create: attachedFiles.map((f: string) => ({
+                fileUrl: f,
+                fileType: 'IMAGE',
+              })),
+            }
+          : undefined,
       },
       include: {
         user: true,
         items: true,
+        files: true,
       },
     });
 

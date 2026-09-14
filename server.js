@@ -35,13 +35,6 @@ app.prepare().then(() => {
     socket.on('update_location', async (data) => {
       const { orderId, lat, lng } = data;
       io.to(`order_${orderId}`).emit('location_updated', { lat, lng });
-
-      if (orderId) {
-        await prisma.order.update({
-          where: { id: orderId },
-          data: { partnerLat: lat, partnerLng: lng },
-        }).catch(err => console.error('[Socket.io] Location update error:', err));
-      }
     });
 
     // Order status updates
@@ -55,14 +48,14 @@ app.prepare().then(() => {
     });
   });
 
-  // SLA Background Worker - checks for orders > 15 mins in KUTILMOQDA state
+  // SLA Background Worker - checks for orders > 15 mins in PENDING state
   setInterval(async () => {
     try {
       const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);
 
       const pendingOrders = await prisma.order.findMany({
         where: {
-          status: 'KUTILMOQDA',
+          status: 'PENDING',
           createdAt: {
             lt: fifteenMinutesAgo,
           },
@@ -74,38 +67,38 @@ app.prepare().then(() => {
       });
 
       for (const order of pendingOrders) {
-        const existingAlert = await prisma.sLAAlert.findFirst({
+        const existingAlert = await prisma.alert.findFirst({
           where: { orderId: order.id },
         });
 
-        if (!existingAlert) {
-          const partnerName = order.partner
-            ? `${order.partner.firstName} ${order.partner.lastName}`
-            : (order.user ? `${order.user.firstName} ${order.user.lastName}` : 'Noma\'lum');
+        if (!existingAlert && order.partnerId) {
+          const partnerObj = await prisma.partner.findUnique({
+            where: { userId: order.partnerId },
+          });
 
-          const partnerPhone = order.partner
-            ? order.partner.phone
-            : (order.user ? order.user.phone : 'Mavjud emas');
+          if (partnerObj) {
+            const partnerName = `${order.partner.firstName} ${order.partner.lastName}`;
+            const alertMsg = `DIQQAT: ${partnerName} o'z buyurtmasini qabul qilmayapti!`;
 
-          const alert = await prisma.sLAAlert.create({
-            data: {
+            const alert = await prisma.alert.create({
+              data: {
+                orderId: order.id,
+                partnerId: partnerObj.id,
+                message: alertMsg,
+              },
+            });
+
+            // Broadcast high-priority red alert
+            io.emit('sla_alert', {
+              id: alert.id,
               orderId: order.id,
               partnerName,
-              partnerPhone,
-            },
-          });
+              message: alertMsg,
+              createdAt: alert.createdAt,
+            });
 
-          // Broadcast high-priority red alert to clients
-          io.emit('sla_alert', {
-            id: alert.id,
-            orderId: order.id,
-            partnerName,
-            partnerPhone,
-            message: `DIQQAT: ${partnerName} o'z buyurtmasini qabul qilmayapti!`,
-            createdAt: alert.createdAt,
-          });
-
-          console.log(`[SLA Alert Triggered] Order ${order.id} timed out for partner ${partnerName}`);
+            console.log(`[SLA Alert Triggered] Order ${order.id} timed out for partner ${partnerName}`);
+          }
         }
       }
     } catch (err) {
@@ -113,7 +106,7 @@ app.prepare().then(() => {
     }
   }, 15000); // Check every 15 seconds
 
-  // Handle all Next.js request routing
+  // Handle Next.js request routing
   server.all(/(.*)/, (req, res) => {
     return handle(req, res);
   });

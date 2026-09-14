@@ -76,7 +76,7 @@ export default function AdminDashboard() {
     await fetch('/api/categories', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: newCatName, coverImage: newCatImg }),
+      body: JSON.stringify({ name: newCatName, imageUrl: newCatImg }),
     });
     setNewCatName('');
     setNewCatImg('');
@@ -96,8 +96,12 @@ export default function AdminDashboard() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: serviceName,
-        iconImage: serviceIcon,
-        customFields,
+        imageUrl: serviceIcon,
+        fields: customFields.map((f) => ({
+          label: f.fieldName,
+          fieldType: f.fieldType.toUpperCase(),
+          required: true,
+        })),
       }),
     });
     setServiceName('');
@@ -107,21 +111,21 @@ export default function AdminDashboard() {
   };
 
   // 4. Toggle Service Block/Unblock
-  const handleToggleService = async (serviceId: string, currentBlocked: boolean) => {
+  const handleToggleService = async (serviceId: string, currentActive: boolean) => {
     await fetch('/api/services', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: serviceId, isBlocked: !currentBlocked }),
+      body: JSON.stringify({ id: serviceId, isActive: !currentActive }),
     });
     fetchAllData();
   };
 
   // 5. Upgrade Partner Tier / Status
-  const handleUpdatePartner = async (userId: string, tier: string, status: string) => {
+  const handleUpdatePartner = async (partnerId: string, level: string, status: string) => {
     await fetch('/api/partners', {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId, partnerTier: tier, partnerStatus: status }),
+      body: JSON.stringify({ partnerId, level, status }),
     });
     fetchAllData();
   };
@@ -129,7 +133,7 @@ export default function AdminDashboard() {
   // Panel 6 Analytics Math
   const totalRevenue = orders.reduce((sum, o) => sum + (o.totalPrice || 0), 0);
   const totalOrdersCount = orders.length;
-  const activePartnersCount = partners.filter((p) => p.partnerStatus === 'APPROVED').length;
+  const activePartnersCount = partners.filter((p) => p.status === 'APPROVED').length;
 
   // Panels List configuration
   const panels = [
@@ -251,7 +255,7 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800">
               {categories.map((c) => (
                 <div key={c.id} className="p-2 bg-slate-950 rounded-xl border border-slate-800 flex items-center gap-2">
-                  <img src={c.coverImage} alt={c.name} className="w-8 h-8 rounded-lg object-cover" />
+                  <img src={c.imageUrl || c.coverImage} alt={c.name} className="w-8 h-8 rounded-lg object-cover" />
                   <span className="text-xs text-slate-200 font-medium truncate">{c.name}</span>
                 </div>
               ))}
@@ -340,18 +344,18 @@ export default function AdminDashboard() {
               {services.map((s) => (
                 <div key={s.id} className="flex items-center justify-between p-3 bg-slate-950 rounded-2xl border border-slate-800">
                   <div className="flex items-center gap-3">
-                    <img src={s.iconImage} alt={s.name} className="w-9 h-9 rounded-xl object-cover" />
+                    <img src={s.imageUrl || s.iconImage} alt={s.name} className="w-9 h-9 rounded-xl object-cover" />
                     <span className="text-xs text-slate-100 font-medium">{s.name}</span>
                   </div>
                   <button
-                    onClick={() => handleToggleService(s.id, s.isBlocked)}
+                    onClick={() => handleToggleService(s.id, s.isActive)}
                     className={`px-3 py-1.5 rounded-xl text-[10px] font-bold transition-all ${
-                      s.isBlocked
+                      !s.isActive
                         ? 'bg-red-500/20 text-red-400 border border-red-500/30'
                         : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
                     }`}
                   >
-                    {s.isBlocked ? 'BLOKLANGAN (Yashirin)' : 'FAOL (Ko\'rinadi)'}
+                    {!s.isActive ? 'BLOKLANGAN (Yashirin)' : 'FAOL (Ko\'rinadi)'}
                   </button>
                 </div>
               ))}
@@ -368,11 +372,11 @@ export default function AdminDashboard() {
                 <div key={p.id} className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-2">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-bold text-xs text-slate-100">{p.firstName} {p.lastName}</h3>
-                      <p className="text-[10px] text-slate-400">Tel: {p.phone}</p>
+                      <h3 className="font-bold text-xs text-slate-100">{p.user?.firstName} {p.user?.lastName}</h3>
+                      <p className="text-[10px] text-slate-400">Tel: {p.user?.phone}</p>
                     </div>
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                      {p.partnerTier}
+                      {p.level} ({p.status})
                     </span>
                   </div>
 
@@ -384,7 +388,7 @@ export default function AdminDashboard() {
                       VIP Darajasiga Ko'tarish
                     </button>
                     <button
-                      onClick={() => handleUpdatePartner(p.id, 'ODDIY', 'APPROVED')}
+                      onClick={() => handleUpdatePartner(p.id, 'STANDARD', 'APPROVED')}
                       className="flex-1 py-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/30 rounded-xl text-[10px] font-semibold"
                     >
                       Tasdiqlash
@@ -433,7 +437,7 @@ export default function AdminDashboard() {
                       Mijoz: {o.user?.firstName} {o.user?.lastName} ({o.user?.phone})
                     </p>
                     <p className="text-xs font-bold text-slate-100">
-                      Jami: {o.totalPrice.toLocaleString()} so'm ({o.paymentMethod})
+                      Jami: {o.totalPrice.toLocaleString()} so'm (Naqd to'lov)
                     </p>
                   </div>
                 ))}
@@ -460,10 +464,10 @@ export default function AdminDashboard() {
                   >
                     <div className="flex items-center gap-2 text-red-400 font-bold text-xs">
                       <ShieldAlert size={16} />
-                      <span>DIQQAT: {al.partnerName} o'z buyurtmasini qabul qilmayapti!</span>
+                      <span>{al.message}</span>
                     </div>
                     <p className="text-[10px] text-slate-300">
-                      Telefon: <span className="font-mono text-red-300 font-bold">{al.partnerPhone}</span>
+                      Hamkor: <span className="font-mono text-red-300 font-bold">{al.partner?.user?.firstName} {al.partner?.user?.lastName} ({al.partner?.user?.phone})</span>
                     </p>
                     <p className="text-[10px] text-slate-400">
                       Order ID: <span className="font-mono">{al.orderId}</span>
