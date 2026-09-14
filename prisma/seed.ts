@@ -3,7 +3,6 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  // Clear existing data
   await prisma.sLAAlert.deleteMany();
   await prisma.orderItem.deleteMany();
   await prisma.order.deleteMany();
@@ -15,7 +14,7 @@ async function main() {
   await prisma.banner.deleteMany();
   await prisma.user.deleteMany();
 
-  // 1. Create Users
+  // 1. Users
   const admin = await prisma.user.create({
     data: {
       phone: '998900000000',
@@ -94,7 +93,7 @@ async function main() {
       },
       {
         imageUrl: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=1000',
-        text: 'Barcha kserokopiya va pasport rasm xizmatlari 100% kafolat bilan!',
+        text: 'Barcha kserokopiya, pasport rasm va video montaj xizmatlari 100% kafolat bilan!',
         isActive: true,
       },
     ],
@@ -102,41 +101,22 @@ async function main() {
 
   // 3. Categories
   const catGiyim = await prisma.category.create({
-    data: {
-      name: 'Giyim-boshlar',
-      coverImage: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400',
-    },
+    data: { name: 'Giyim-boshlar', coverImage: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400' },
   });
-
   const catCosmetics = await prisma.category.create({
-    data: {
-      name: 'Atirlar/Kosmetika',
-      coverImage: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400',
-    },
+    data: { name: 'Atirlar/Kosmetika', coverImage: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400' },
   });
-
   const catOziqOvqat = await prisma.category.create({
-    data: {
-      name: "Oziq-ovqat",
-      coverImage: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400',
-    },
+    data: { name: 'Oziq-ovqat', coverImage: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400' },
   });
-
   const catTayyorTaomlar = await prisma.category.create({
-    data: {
-      name: 'Tayyor taomlar',
-      coverImage: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400',
-    },
+    data: { name: 'Tayyor taomlar', coverImage: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400' },
   });
-
   const catOquvQurollari = await prisma.category.create({
-    data: {
-      name: "O'quv qurollari",
-      coverImage: 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?w=400',
-    },
+    data: { name: "O'quv qurollari", coverImage: 'https://images.unsplash.com/photo-1456735190827-d1262f71b8a3?w=400' },
   });
 
-  // 4. Products (Uploaded by VIP Seller)
+  // 4. Products
   await prisma.product.createMany({
     data: [
       {
@@ -169,29 +149,19 @@ async function main() {
     ],
   });
 
-  // 5. Dynamic Services
-  const kserokopiya = await prisma.service.create({
-    data: {
-      name: 'Kserokopiya',
-      iconImage: 'https://images.unsplash.com/photo-1568667256549-094345857637?w=300',
-      customFields: {
-        create: [
-          { fieldName: 'Hujjat faylini yuklang yoki rasmga oling', fieldType: 'file', isRequired: true },
-          { fieldName: 'Nusxa soni', fieldType: 'number', isRequired: true },
-          { fieldName: 'Rangli yoki Oq-qora', fieldType: 'text', isRequired: true },
-        ],
-      },
-    },
-  });
+  // 5. Expand Dynamic Services with Promotional Video URLs
+  const sampleVideoUrl = 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4';
 
-  const pasportRasm = await prisma.service.create({
+  await prisma.service.create({
     data: {
-      name: 'Pasport rasm',
-      iconImage: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=300',
+      name: 'Kserokopiya va Chop etish',
+      iconImage: 'https://images.unsplash.com/photo-1568667256549-094345857637?w=300',
+      videoUrl: sampleVideoUrl,
       customFields: {
         create: [
-          { fieldName: 'Pasport uchun rasm yuklang yoki kameradan oling', fieldType: 'file', isRequired: true },
-          { fieldName: 'Fonsiz qilish kerakmi? (Ha/Yo\'q)', fieldType: 'text', isRequired: false },
+          { fieldName: 'Hujjat faylini yuklang yoki rasm/video oling', fieldType: 'file', isRequired: true },
+          { fieldName: 'Nusxa soni', fieldType: 'number', isRequired: true },
+          { fieldName: 'Format (A4/A3/Rangli)', fieldType: 'text', isRequired: true },
         ],
       },
     },
@@ -199,18 +169,75 @@ async function main() {
 
   await prisma.service.create({
     data: {
-      name: 'Oilaviy rasmlar',
-      iconImage: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=300',
+      name: 'Pasport rasm (3x4 Express)',
+      iconImage: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=300',
+      videoUrl: sampleVideoUrl,
       customFields: {
         create: [
-          { fieldName: 'Oilaviy rasmlarni tanlang', fieldType: 'file', isRequired: true },
-          { fieldName: 'Rasm o\'lchami (10x15, A4)', fieldType: 'text', isRequired: true },
+          { fieldName: 'Pasport uchun rasm/video oling', fieldType: 'file', isRequired: true },
+          { fieldName: 'Fonsiz oq qilish kerakmi?', fieldType: 'text', isRequired: false },
         ],
       },
     },
   });
 
-  console.log('Database seeded successfully!');
+  await prisma.service.create({
+    data: {
+      name: 'Oilaviy va Bayram Rasmlari',
+      iconImage: 'https://images.unsplash.com/photo-1511895426328-dc8714191300?w=300',
+      videoUrl: sampleVideoUrl,
+      customFields: {
+        create: [
+          { fieldName: 'Rasmlarni yoki videolarni biriktiring', fieldType: 'file', isRequired: true },
+          { fieldName: 'O\'lchami va ramka turi', fieldType: 'text', isRequired: true },
+        ],
+      },
+    },
+  });
+
+  await prisma.service.create({
+    data: {
+      name: 'Talaba Hujjatlari va Diplom',
+      iconImage: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=300',
+      videoUrl: sampleVideoUrl,
+      customFields: {
+        create: [
+          { fieldName: 'Diplom/Hujjat faylini yuklang', fieldType: 'file', isRequired: true },
+          { fieldName: 'Muqovalash (Pereplet) kerakmi?', fieldType: 'text', isRequired: true },
+        ],
+      },
+    },
+  });
+
+  await prisma.service.create({
+    data: {
+      name: 'Professional Tarjima Xizmati',
+      iconImage: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=300',
+      videoUrl: sampleVideoUrl,
+      customFields: {
+        create: [
+          { fieldName: 'Original matn/fayl', fieldType: 'file', isRequired: true },
+          { fieldName: 'Mahsulot tili (Ingliz, Rus, O\'zbek)', fieldType: 'text', isRequired: true },
+        ],
+      },
+    },
+  });
+
+  await prisma.service.create({
+    data: {
+      name: 'Video Montaj va Klip Yaratish',
+      iconImage: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=300',
+      videoUrl: sampleVideoUrl,
+      customFields: {
+        create: [
+          { fieldName: 'Xom video materiallarni yuklang', fieldType: 'file', isRequired: true },
+          { fieldName: 'Format (Reels, Shorts, YouTube)', fieldType: 'text', isRequired: true },
+        ],
+      },
+    },
+  });
+
+  console.log('Expanded Database seeded with dynamic services and video promo metadata!');
 }
 
 main()

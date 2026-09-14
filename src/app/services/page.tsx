@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Camera, Upload, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Camera, Upload, CheckCircle2, Video, Play, ShieldCheck, ArrowLeft } from 'lucide-react';
+import ServiceVideoModal from '@/components/ServiceVideoModal';
 
 export default function ServicesPage() {
   const [services, setServices] = useState<any[]>([]);
@@ -11,6 +12,13 @@ export default function ServicesPage() {
   const [uploading, setUploading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
   const [createdOrderId, setCreatedOrderId] = useState('');
+
+  // Video Modal State
+  const [activeVideoModal, setActiveVideoModal] = useState<{
+    isOpen: boolean;
+    serviceName: string;
+    videoUrl?: string;
+  }>({ isOpen: false, serviceName: '' });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
@@ -79,16 +87,22 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 pb-24">
-      <header className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800 px-4 py-3">
-        <h1 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
-          Xizmatlar katalogi
-        </h1>
-        <p className="text-xs text-slate-400">Pasport rasm, Kserokopiya va boshqa xizmatlar</p>
+      {/* Header */}
+      <header className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800 px-4 py-3 flex items-center justify-between">
+        <div>
+          <h1 className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
+            Xizmatlar Katalogi & Video
+          </h1>
+          <p className="text-xs text-slate-400">Barcha xizmatlar va video qo'llanmalar</p>
+        </div>
+        <span className="text-[10px] font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full">
+          30+ Faol Xizmat
+        </span>
       </header>
 
       <main className="max-w-md mx-auto px-4 pt-4 space-y-4">
         {orderSuccess ? (
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 text-center space-y-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 text-center space-y-4 shadow-xl">
             <div className="w-16 h-16 bg-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto border border-emerald-500/30">
               <CheckCircle2 size={36} />
             </div>
@@ -97,7 +111,7 @@ export default function ServicesPage() {
               Buyurtma ID: <span className="text-blue-400 font-mono font-bold">{createdOrderId}</span>
             </p>
             <p className="text-xs text-amber-400/90 bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">
-              🔒 Maxfiylik kafolati: Buyurtma bajarilgach (Topshirildi), barcha pasport va shaxsiy hujjat rasmlari serverdan avtomatik O'CHIRILADI!
+              🔒 Maxfiylik kafolati: Buyurtma bajarilgach (Topshirildi), barcha pasport, video va shaxsiy hujjat rasmlari serverdan avtomatik O'CHIRILADI!
             </p>
             <button
               onClick={() => {
@@ -106,7 +120,7 @@ export default function ServicesPage() {
                 setAttachedFiles([]);
                 setFormData({});
               }}
-              className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-medium"
+              className="w-full py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-medium transition-all"
             >
               Yangi buyurtma yaratish
             </button>
@@ -118,28 +132,51 @@ export default function ServicesPage() {
               .map((service) => (
                 <div
                   key={service.id}
-                  onClick={() => setSelectedService(service)}
-                  className="bg-slate-900 border border-slate-800 hover:border-blue-500/50 rounded-2xl p-4 flex items-center justify-between cursor-pointer transition-all"
+                  className="bg-slate-900 border border-slate-800 hover:border-blue-500/50 rounded-2xl p-4 flex flex-col gap-3 transition-all shadow-lg"
                 >
-                  <div className="flex items-center gap-3">
-                    <img
-                      src={service.iconImage}
-                      alt={service.name}
-                      className="w-12 h-12 rounded-xl object-cover bg-slate-950"
-                    />
-                    <div>
-                      <h3 className="font-semibold text-sm text-slate-100">{service.name}</h3>
-                      <p className="text-[10px] text-slate-400">
-                        {service.customFields.length} ta majburiy maydon
-                      </p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={service.iconImage}
+                        alt={service.name}
+                        className="w-12 h-12 rounded-xl object-cover bg-slate-950 border border-slate-800"
+                      />
+                      <div>
+                        <h3 className="font-semibold text-sm text-slate-100">{service.name}</h3>
+                        <p className="text-[10px] text-slate-400">
+                          {service.customFields.length} ta majburiy maydon
+                        </p>
+                      </div>
                     </div>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setActiveVideoModal({
+                          isOpen: true,
+                          serviceName: service.name,
+                          videoUrl: service.videoUrl,
+                        })
+                      }
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600/20 border border-blue-500/30 text-blue-400 hover:bg-blue-600/30 text-xs font-medium transition-all"
+                    >
+                      <Play size={12} className="fill-blue-400" />
+                      <span>Rolik</span>
+                    </button>
                   </div>
-                  <span className="text-xs text-blue-400 font-medium">Tanlash →</span>
+
+                  <button
+                    onClick={() => setSelectedService(service)}
+                    className="w-full py-2 bg-slate-950 hover:bg-blue-600 border border-slate-800 hover:border-blue-500 text-slate-300 hover:text-white rounded-xl text-xs font-medium transition-all flex items-center justify-center gap-1"
+                  >
+                    <span>Xizmatdan foydalanish</span>
+                    <span>→</span>
+                  </button>
                 </div>
               ))}
           </div>
         ) : (
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <div className="flex items-center gap-3">
                 <img
@@ -147,13 +184,19 @@ export default function ServicesPage() {
                   alt={selectedService.name}
                   className="w-10 h-10 rounded-xl object-cover"
                 />
-                <h2 className="font-bold text-sm text-slate-100">{selectedService.name}</h2>
+                <div>
+                  <h2 className="font-bold text-sm text-slate-100">{selectedService.name}</h2>
+                  <p className="text-[10px] text-emerald-400 flex items-center gap-1">
+                    <ShieldCheck size={12} />
+                    <span>Auto-delete faol</span>
+                  </p>
+                </div>
               </div>
               <button
                 onClick={() => setSelectedService(null)}
-                className="text-xs text-slate-400 hover:text-white"
+                className="text-xs text-slate-400 hover:text-white flex items-center gap-1"
               >
-                Orqaga
+                <ArrowLeft size={14} /> Orqaga
               </button>
             </div>
 
@@ -171,45 +214,49 @@ export default function ServicesPage() {
                         <button
                           type="button"
                           onClick={() => fileInputRef.current?.click()}
-                          className="flex items-center justify-center gap-2 p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 hover:border-blue-500/50"
+                          className="flex items-center justify-center gap-2 p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 hover:border-blue-500/50 transition-all"
                         >
                           <Upload size={16} className="text-blue-400" />
-                          <span>Fayl yuklash</span>
+                          <span>Fayl/Video</span>
                         </button>
 
                         {/* Native Camera Integration capture="environment" */}
                         <button
                           type="button"
                           onClick={() => cameraInputRef.current?.click()}
-                          className="flex items-center justify-center gap-2 p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 hover:border-emerald-500/50"
+                          className="flex items-center justify-center gap-2 p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 hover:border-emerald-500/50 transition-all"
                         >
                           <Camera size={16} className="text-emerald-400" />
-                          <span>Kameradan rasmga olish</span>
+                          <span>Kameradan olish</span>
                         </button>
                       </div>
 
                       {/* Hidden File & Camera Inputs */}
                       <input
                         type="file"
+                        accept="image/*,video/*"
                         ref={fileInputRef}
                         onChange={handleFileUpload}
                         className="hidden"
                       />
                       <input
                         type="file"
-                        accept="image/*"
+                        accept="image/*,video/*"
                         capture="environment"
                         ref={cameraInputRef}
                         onChange={handleFileUpload}
                         className="hidden"
                       />
 
-                      {uploading && <p className="text-[10px] text-blue-400">Fayl yuklanmoqda...</p>}
+                      {uploading && <p className="text-[10px] text-blue-400">Fayl/Video yuklanmoqda...</p>}
 
                       {attachedFiles.length > 0 && (
                         <div className="space-y-1">
                           {attachedFiles.map((url, idx) => (
-                            <div key={idx} className="flex items-center gap-2 text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1.5 rounded-lg">
+                            <div
+                              key={idx}
+                              className="flex items-center gap-2 text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1.5 rounded-lg"
+                            >
                               <CheckCircle2 size={12} />
                               <span className="truncate">{url}</span>
                             </div>
@@ -241,6 +288,14 @@ export default function ServicesPage() {
           </div>
         )}
       </main>
+
+      {/* Service Video Demo Modal */}
+      <ServiceVideoModal
+        isOpen={activeVideoModal.isOpen}
+        onClose={() => setActiveVideoModal({ ...activeVideoModal, isOpen: false })}
+        serviceName={activeVideoModal.serviceName}
+        videoUrl={activeVideoModal.videoUrl}
+      />
     </div>
   );
 }

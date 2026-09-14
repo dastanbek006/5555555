@@ -68,6 +68,7 @@ model Service {
   id           String        @id @default(uuid())
   name         String
   iconImage    String
+  videoUrl     String?       // Video demo / promo URL
   isBlocked    Boolean       @default(false)
   customFields CustomField[]
   createdAt    DateTime      @default(now())
