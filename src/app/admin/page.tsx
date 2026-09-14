@@ -13,7 +13,11 @@ import {
   Trash2,
   CheckCircle,
   XCircle,
-  Plus
+  Plus,
+  TrendingUp,
+  DollarSign,
+  Activity,
+  Award
 } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -122,6 +126,11 @@ export default function AdminDashboard() {
     fetchAllData();
   };
 
+  // Panel 6 Analytics Math
+  const totalRevenue = orders.reduce((sum, o) => sum + (o.totalPrice || 0), 0);
+  const totalOrdersCount = orders.length;
+  const activePartnersCount = partners.filter((p) => p.partnerStatus === 'APPROVED').length;
+
   // Panels List configuration
   const panels = [
     { id: '1', title: '1. Top Banner Ads', icon: ImageIcon },
@@ -129,7 +138,7 @@ export default function AdminDashboard() {
     { id: '3', title: '3. Service Builder', icon: Wrench },
     { id: '4', title: '4. Service Controller', icon: ToggleLeft },
     { id: '5', title: '5. Partners', icon: Users },
-    { id: '6', title: '6. Order Monitor', icon: ShoppingBag },
+    { id: '6', title: '6. Analytics & Order Monitor', icon: ShoppingBag },
     { id: '7', title: '7. Alert Center (15m SLA)', icon: Bell },
   ];
 
@@ -387,25 +396,48 @@ export default function AdminDashboard() {
           </div>
         )}
 
-        {/* PANEL 6: Order Monitor */}
+        {/* PANEL 6: Order Monitor & Real-Time Analytics */}
         {activeTab === '6' && (
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-3">
-            <h2 className="font-bold text-sm text-slate-100">Barcha Buyurtmalar Monitoringi</h2>
-            <div className="space-y-2">
-              {orders.map((o) => (
-                <div key={o.id} className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono font-bold text-blue-400">#{o.id.slice(0, 8)}</span>
-                    <span className="text-[10px] font-semibold text-slate-300">{o.status}</span>
+          <div className="space-y-4">
+            {/* Analytics Metric Cards */}
+            <div className="grid grid-cols-3 gap-2">
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3 text-center">
+                <DollarSign size={16} className="text-emerald-400 mx-auto mb-1" />
+                <span className="text-[9px] text-slate-400 block font-medium">Jami Tushum</span>
+                <span className="text-xs font-black text-emerald-400">{totalRevenue.toLocaleString()} so'm</span>
+              </div>
+
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3 text-center">
+                <ShoppingBag size={16} className="text-blue-400 mx-auto mb-1" />
+                <span className="text-[9px] text-slate-400 block font-medium">Buyurtmalar</span>
+                <span className="text-xs font-black text-blue-400">{totalOrdersCount} ta</span>
+              </div>
+
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3 text-center">
+                <Award size={16} className="text-amber-400 mx-auto mb-1" />
+                <span className="text-[9px] text-slate-400 block font-medium">Faol Hamkorlar</span>
+                <span className="text-xs font-black text-amber-400">{activePartnersCount} ta</span>
+              </div>
+            </div>
+
+            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-5 space-y-3">
+              <h2 className="font-bold text-sm text-slate-100">Barcha Buyurtmalar Monitoringi</h2>
+              <div className="space-y-2">
+                {orders.map((o) => (
+                  <div key={o.id} className="p-3 bg-slate-950 rounded-2xl border border-slate-800 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-mono font-bold text-blue-400">#{o.id.slice(0, 8)}</span>
+                      <span className="text-[10px] font-semibold text-slate-300">{o.status}</span>
+                    </div>
+                    <p className="text-[10px] text-slate-400">
+                      Mijoz: {o.user?.firstName} {o.user?.lastName} ({o.user?.phone})
+                    </p>
+                    <p className="text-xs font-bold text-slate-100">
+                      Jami: {o.totalPrice.toLocaleString()} so'm ({o.paymentMethod})
+                    </p>
                   </div>
-                  <p className="text-[10px] text-slate-400">
-                    Mijoz: {o.user?.firstName} {o.user?.lastName} ({o.user?.phone})
-                  </p>
-                  <p className="text-xs font-bold text-slate-100">
-                    Jami: {o.totalPrice.toLocaleString()} so'm ({o.paymentMethod})
-                  </p>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         )}

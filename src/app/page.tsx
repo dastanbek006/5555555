@@ -4,27 +4,54 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import PartnerRegistrationModal from '@/components/PartnerRegistrationModal';
-import { ShoppingCart, Phone, Lock, User, Plus, Check, Play, Sparkles, ShieldCheck, Zap } from 'lucide-react';
+import ProductDetailModal from '@/components/ProductDetailModal';
+import {
+  ShoppingCart,
+  Phone,
+  Lock,
+  User,
+  Plus,
+  Check,
+  Play,
+  Sparkles,
+  ShieldCheck,
+  Zap,
+  Search,
+  SlidersHorizontal,
+  Star,
+  CheckCircle2
+} from 'lucide-react';
 
 export default function HomePage() {
   const [banners, setBanners] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortOrder, setSortOrder] = useState<'ASC' | 'DESC' | 'DEFAULT'>('DEFAULT');
   const [cart, setCart] = useState<{ [key: string]: number }>({});
 
-  // Auth state
+  // Modals state
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
   const [showPartnerModal, setShowPartnerModal] = useState(false);
+  const [selectedProductForModal, setSelectedProductForModal] = useState<any>(null);
+
+  // Toast Notification state
+  const [toastMessage, setToastMessage] = useState('');
 
   useEffect(() => {
     fetch('/api/banners').then((res) => res.json()).then((data) => setBanners(data.banners || []));
     fetch('/api/categories').then((res) => res.json()).then((data) => setCategories(data.categories || []));
     fetch('/api/products').then((res) => res.json()).then((data) => setProducts(data.products || []));
   }, []);
+
+  const triggerToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(''), 3000);
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +68,7 @@ export default function HomePage() {
         setShowPartnerModal(true);
       } else if (res.ok) {
         setShowAuthModal(false);
-        alert(`Xush kelibsiz, ${data.user.firstName}!`);
+        triggerToast(`Xush kelibsiz, ${data.user.firstName}!`);
       } else {
         setAuthError(data.error || 'Xatolik yuz berdi');
       }
@@ -52,16 +79,43 @@ export default function HomePage() {
 
   const addToCart = (productId: string) => {
     setCart((prev) => ({ ...prev, [productId]: (prev[productId] || 0) + 1 }));
+    triggerToast("Mahsulot savatga qo'shildi!");
   };
 
-  const filteredProducts = selectedCategory === 'ALL'
-    ? products
-    : products.filter((p) => p.categoryId === selectedCategory);
+  // Filter & Sort Logic
+  let processedProducts = products.filter((p) => {
+    const matchesCat = selectedCategory === 'ALL' || p.categoryId === selectedCategory;
+    const matchesSearch =
+      p.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (p.description && p.description.toLowerCase().includes(searchQuery.toLowerCase()));
+    return matchesCat && matchesSearch;
+  });
+
+  if (sortOrder === 'ASC') {
+    processedProducts.sort((a, b) => a.price - b.price);
+  } else if (sortOrder === 'DESC') {
+    processedProducts.sort((a, b) => b.price - a.price);
+  }
 
   const cartCount = Object.values(cart).reduce((a, b) => a + b, 0);
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100 pb-24 font-sans antialiased">
+      {/* Toast Notification Banner */}
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ y: -50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -50, opacity: 0 }}
+            className="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-emerald-500/90 text-white font-bold text-xs px-4 py-2.5 rounded-full shadow-2xl backdrop-blur-md flex items-center gap-2 border border-emerald-400/40"
+          >
+            <CheckCircle2 size={16} />
+            <span>{toastMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Top Banner Marquee Header */}
       <header className="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/80">
         <div className="overflow-hidden bg-gradient-to-r from-blue-600/30 via-indigo-600/30 to-purple-600/30 py-1.5 px-4 border-b border-blue-500/20">
@@ -69,7 +123,6 @@ export default function HomePage() {
             <span className="flex items-center gap-1"><Sparkles size={12} className="text-amber-400" /> TM Smart Market — Zamonaviy E-Commerce & Service Platforma</span>
             <span className="flex items-center gap-1"><Zap size={12} className="text-blue-400" /> Tezkor yetkazib berish</span>
             <span className="flex items-center gap-1"><ShieldCheck size={12} className="text-emerald-400" /> Talabalar uchun chegirma</span>
-            <span className="flex items-center gap-1"><Sparkles size={12} className="text-amber-400" /> TM Smart Market — Zamonaviy E-Commerce & Service Platforma</span>
           </div>
         </div>
 
@@ -112,6 +165,38 @@ export default function HomePage() {
               )}
             </Link>
           </div>
+        </div>
+
+        {/* Instant Search Bar */}
+        <div className="max-w-md mx-auto px-4 pb-3 flex gap-2">
+          <div className="relative flex-1">
+            <Search size={16} className="absolute left-3.5 top-3 text-slate-500" />
+            <input
+              type="text"
+              placeholder="Mahsulot yoki xizmatlarni qidirish..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-slate-900/90 border border-slate-800 rounded-2xl pl-10 pr-4 py-2 text-xs text-slate-100 focus:outline-none focus:border-blue-500/80 transition-all shadow-inner"
+            />
+          </div>
+
+          <button
+            onClick={() => {
+              if (sortOrder === 'DEFAULT') setSortOrder('ASC');
+              else if (sortOrder === 'ASC') setSortOrder('DESC');
+              else setSortOrder('DEFAULT');
+            }}
+            className={`p-2.5 rounded-2xl border transition-all flex items-center justify-center shrink-0 text-xs font-bold gap-1 ${
+              sortOrder !== 'DEFAULT'
+                ? 'bg-blue-600 border-blue-500 text-white'
+                : 'bg-slate-900 border-slate-800 text-slate-400'
+            }`}
+            title="Narx bo'yicha saralash"
+          >
+            <SlidersHorizontal size={14} />
+            {sortOrder === 'ASC' && '↑'}
+            {sortOrder === 'DESC' && '↓'}
+          </button>
         </div>
       </header>
 
@@ -190,12 +275,16 @@ export default function HomePage() {
         <div>
           <div className="flex items-center justify-between mb-3">
             <h2 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">Mahsulotlar</h2>
-            <span className="text-[10px] text-slate-500 font-medium">{filteredProducts.length} ta faol</span>
+            <span className="text-[10px] text-slate-500 font-medium">{processedProducts.length} ta topildi</span>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            {filteredProducts.map((p) => {
-              const images = Array.isArray(p.images) ? p.images : [];
+            {processedProducts.map((p) => {
+              const images = Array.isArray(p.images)
+                ? p.images
+                : typeof p.images === 'string'
+                ? JSON.parse(p.images || '[]')
+                : [];
               const mainImg = images[0] || 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400';
               const isAdded = (cart[p.id] || 0) > 0;
 
@@ -205,7 +294,10 @@ export default function HomePage() {
                   whileHover={{ y: -3 }}
                   className="bg-slate-900/70 border border-slate-800/80 rounded-3xl overflow-hidden flex flex-col justify-between hover:border-slate-700 transition-all shadow-xl"
                 >
-                  <div>
+                  <div
+                    onClick={() => setSelectedProductForModal(p)}
+                    className="cursor-pointer"
+                  >
                     <div className="relative aspect-square w-full bg-slate-950 overflow-hidden">
                       <img src={mainImg} alt={p.title} className="w-full h-full object-cover" />
                       <span className="absolute top-2.5 right-2.5 bg-slate-950/80 backdrop-blur-md px-2 py-0.5 rounded-full text-[10px] text-blue-400 border border-blue-500/20 font-semibold">
@@ -215,8 +307,13 @@ export default function HomePage() {
                     <div className="p-3">
                       <h3 className="font-bold text-xs text-slate-100 line-clamp-1">{p.title}</h3>
                       <p className="text-[10px] text-slate-400 line-clamp-1 mt-0.5">{p.description}</p>
-                      <div className="mt-2 font-black text-sm text-blue-400">
-                        {p.price.toLocaleString()} so'm
+                      <div className="mt-2 flex items-center justify-between">
+                        <span className="font-black text-sm text-blue-400">
+                          {p.price.toLocaleString()} so'm
+                        </span>
+                        <span className="text-[10px] text-amber-400 flex items-center gap-0.5">
+                          <Star size={10} className="fill-amber-400" /> 4.9
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -249,6 +346,15 @@ export default function HomePage() {
           </div>
         </div>
       </main>
+
+      {/* Product Detail Modal */}
+      <ProductDetailModal
+        isOpen={Boolean(selectedProductForModal)}
+        onClose={() => setSelectedProductForModal(null)}
+        product={selectedProductForModal}
+        onAddToCart={(id) => addToCart(id)}
+        isAdded={selectedProductForModal ? (cart[selectedProductForModal.id] || 0) > 0 : false}
+      />
 
       {/* Auth Modal */}
       {showAuthModal && (

@@ -279,3 +279,81 @@ Require stack:
  GET /_next/static/chunks/app-pages-internals.js 404 in 105ms
  GET /_next/static/chunks/main-app.js?v=1789380729773 404 in 108ms
  GET /_next/static/chunks/app/layout.js 404 in 101ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat '/app/.next/server/vendor-chunks/motion-utils.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/motion-utils' in /app/.next/server for build dependencies doesn't lead to expected result '/app/.next/server/vendor-chunks/motion-utils.js', but to 'Error: Can't resolve './vendor-chunks/motion-utils' in '/app/.next/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/motion-utils (expected /app/.next/server/vendor-chunks/motion-utils.js)
+<w>  at file dependencies /app/.next/server/webpack-runtime.js
+<w>  at file /app/.next/server/webpack-runtime.js
+<w>  at file dependencies /app/.next/server/app/api/alerts/route.js
+<w>  at file /app/.next/server/app/api/alerts/route.js
+<w>  at file dependencies /app/node_modules/next/dist/server/require.js
+<w>  at file /app/node_modules/next/dist/server/require.js
+<w>  at file dependencies /app/node_modules/next/dist/server/load-components.js
+<w>  at file /app/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /app/node_modules/next/dist/build/utils.js
+<w>  at file /app/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /app/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /app/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at resolve commonjs /app/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving './vendor-chunks/motion-dom' in /app/.next/server for build dependencies doesn't lead to expected result '/app/.next/server/vendor-chunks/motion-dom.js', but to 'Error: Can't resolve './vendor-chunks/motion-dom' in '/app/.next/server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ./vendor-chunks/motion-dom (expected /app/.next/server/vendor-chunks/motion-dom.js)
+<w>  at file dependencies /app/.next/server/webpack-runtime.js
+<w>  at file /app/.next/server/webpack-runtime.js
+<w>  at file dependencies /app/.next/server/app/api/alerts/route.js
+<w>  at file /app/.next/server/app/api/alerts/route.js
+<w>  at file dependencies /app/node_modules/next/dist/server/require.js
+<w>  at file /app/node_modules/next/dist/server/require.js
+<w>  at file dependencies /app/node_modules/next/dist/server/load-components.js
+<w>  at file /app/node_modules/next/dist/server/load-components.js
+<w>  at file dependencies /app/node_modules/next/dist/build/utils.js
+<w>  at file /app/node_modules/next/dist/build/utils.js
+<w>  at file dependencies /app/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at file /app/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+<w>  at resolve commonjs /app/node_modules/next/dist/build/webpack/loaders/next-route-loader/index.js
+ ✓ Compiled in 6.4s (941 modules)
+ ✓ Compiled in 3.4s (994 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 1541ms (754 modules)
+ GET / 200 in 2249ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 1449ms (1689 modules)
+ GET /_next/static/chunks/main-app.js?v=1789393938297 404 in 1783ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 1757ms
+ ✓ Compiled /admin in 234ms (766 modules)
+ GET /admin 200 in 343ms
+ GET /_next/static/chunks/main-app.js?v=1789393941839 404 in 88ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 85ms
+ GET /_next/static/chunks/app/admin/page.js 404 in 84ms
+ ○ Compiling /services ...
+ ✓ Compiled /services in 834ms (777 modules)
+ GET /services 200 in 1005ms
+ GET /_next/static/chunks/main-app.js?v=1789393943943 404 in 107ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 83ms
+ GET /_next/static/chunks/app/services/page.js 404 in 82ms
+ ✓ Compiled /orders in 309ms (853 modules)
+ GET /orders 200 in 471ms
+ GET /_next/static/chunks/main-app.js?v=1789393945579 404 in 118ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 122ms
+ GET /_next/static/chunks/app/orders/page.js 404 in 118ms
+ ✓ Compiled in 3.1s (998 modules)
+ ✓ Compiled in 391ms (949 modules)
+ ✓ Compiled / in 413ms (754 modules)
+ GET / 200 in 788ms
+ ✓ Compiled /_not-found in 480ms (1692 modules)
+ GET /_next/static/chunks/app-pages-internals.js 404 in 636ms
+ GET /_next/static/chunks/main-app.js?v=1789394049030 404 in 643ms
+ ○ Compiling /admin ...
+ ✓ Compiled /admin in 682ms (768 modules)
+ GET /admin 200 in 806ms
+ GET /_next/static/chunks/main-app.js?v=1789394051651 404 in 84ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 82ms
+ ○ Compiling /services ...
+ ✓ Compiled /services in 879ms (779 modules)
+ GET /services 200 in 1167ms
+ GET /_next/static/chunks/main-app.js?v=1789394053825 404 in 118ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 116ms
+ GET /_next/static/chunks/app/services/page.js 404 in 113ms
+ ✓ Compiled /orders in 373ms (856 modules)
+ GET /orders 200 in 559ms
+ GET /_next/static/chunks/main-app.js?v=1789394055610 404 in 108ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 106ms
